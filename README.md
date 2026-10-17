@@ -1,21 +1,28 @@
-# QuantEngine starter
+# QuantEngine v2
 
-Responsive crypto quant dashboard with a premium dark interface, animated hero, market cards, strategy equity curve, scanner table and position risk calculator.
+## Included
+- TradingView-style candlestick workspace using Lightweight Charts, with timeframe buttons from 1 minute through 1 month (1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 12h, 1D, 1W, 1M).
+- CoinDCX public spot snapshot.
+- Your 1D USDT futures opposite-break strategy (no automatic orders).
+- RSI/EMA technical scanner.
+- Risk/position calculator.
+- 3D animated visual using Three.js plus CSS fallback.
+- Admin page at `/admin`.
 
-## Run locally
-1. Install Python 3.10+.
-2. In this folder run: `pip install -r requirements.txt`
-3. Run: `python server.py`
-4. Open `http://127.0.0.1:8000`
+## Deploy to Render
+1. Put `server.py`, `index.html`, `admin.html`, `requirements.txt` and `render.yaml` in the root of the GitHub repository.
+2. In Render, use the repo and deploy. Build command: `pip install -r requirements.txt`; start command: `gunicorn server:app --workers 1 --threads 8 --timeout 120`.
+3. In Render > Environment set:
+   - `ADMIN_USERNAME` = a username you choose (default in render.yaml is `admin`)
+   - `ADMIN_PASSWORD` = a strong, unique password
+   - `SECRET_KEY` = long random secret (if not generated automatically)
+4. Open `https://YOUR-SITE.onrender.com/admin` to manage the announcement and section visibility.
 
-## Important notes
-- The HTML/CSS/JavaScript front end is responsive for mobile and desktop.
-- The Python Flask backend requests public CoinDCX market endpoints. API availability, symbol naming, candle parameters and response fields can change; check CoinDCX's current API docs if a route returns an error.
-- The market overview currently displays last-price snapshots. Percentage changes are not fabricated; daily change displays as 0 in the backend until you wire in a verified ticker/candle comparison.
-- The strategy equity curve and performance metrics are clearly illustrative sample data, not actual backtest results.
-- No API secrets are needed for the public endpoints used here. Never put private API keys in frontend JavaScript.
-- This project does not place orders. Do not connect live order execution without extensive testing, authentication, risk limits and explicit confirmation.
-
-
-### Private Admin Login
-The private panel is at `/admin`. Configure `ADMIN_PASSWORD` and `SECRET_KEY` as hosting environment variables before deploying. `ADMIN_USERNAME` defaults to `krishkumar`. Never commit credentials to source control. See `README_DEPLOY.md` for details.
+## Important limitations
+- The app uses CoinDCX public API endpoints. Exchange API responses, pair formats, resolutions, rate limits and availability may change. If the exchange returns a different format, chart or strategy data may be temporarily unavailable; check Render logs.
+- Strategy logic follows the provided code: it excludes the last candle as the current/incomplete candle, uses T/A/B, sets the alert level to B Low for UP or B High for DOWN, and invalidation level to A Low/A High. It scans on the server and checks prices every five minutes. No order placement is implemented.
+- Candle endpoint data is not guaranteed to be real-time or available for every selected timeframe. The UI offers 1-minute through monthly intervals, but CoinDCX may not return every interval for every pair; unsupported intervals will show a chart-data-unavailable message. Confirm exchange responses and compare a few candles before relying on any signal.
+- The app has no push notifications by default; browser notifications require a separate permission/foreground support and this build shows alert state in the table.
+- Render's ephemeral filesystem can reset `site_settings.json` after a restart/deploy. For persistent admin settings, attach a persistent disk and set `QUANTENGINE_SETTINGS_FILE` to a path on that disk, or move settings to a database.
+- External CDN libraries (Lightweight Charts, Three.js, Google Fonts) need internet access in the visitor's browser.
+- This is a research/alert dashboard, not financial advice and not an execution system.
