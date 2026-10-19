@@ -1,6 +1,6 @@
 # QUANTENGINE — Real Data Starter
 
-This package replaces the frontend-only demo with a full-stack starter that preserves the supplied QUANTENGINE dashboard design and adds server-side connectors for live public market data.
+This package preserves the supplied QUANTENGINE dashboard UI in `public/index.html` and adds a Node.js/Express API. This package replaces the frontend-only demo with a full-stack starter that preserves the supplied QUANTENGINE dashboard design and adds server-side connectors for live public market data.
 
 ## Included real integrations
 
@@ -19,9 +19,10 @@ Requires Node.js 20+.
 
 ```bash
 npm install
-cp .env.example .env
 npm start
 ```
+
+Optional API keys can be set as environment variables in your shell or hosting dashboard. The app does not require a `.env` file to start.
 
 Open `http://localhost:3000`.
 

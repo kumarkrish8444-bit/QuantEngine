@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -119,5 +118,7 @@ app.get('/api/stocks/quote', async (req, res) => {
 
 // Explicitly do not expose private exchange keys or order-placement routes in this starter.
 app.all('/api/trade/*', (_req, res) => res.status(403).json({ error: 'Trading is disabled in this build. Public market-data integration only.' }));
+app.use('/api', (_req, res) => res.status(404).json({ error: 'API route not found' }));
+
 app.get('*', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 app.listen(PORT, () => console.log(`QUANTENGINE listening on port ${PORT}`));
