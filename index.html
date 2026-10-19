@@ -1,62 +1,968 @@
-<!doctype html>
-<html lang="hi">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#070b12"><title>QuantEngine — Futures Intelligence</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>QUANTENGINE 2.0 — Demo</title>
 <style>
-:root{--bg:#070b12;--panel:#101824;--panel2:#0b121d;--line:#243247;--muted:#8292aa;--text:#edf4ff;--green:#48efb1;--red:#ff6e83;--blue:#7694ff;--gold:#f3ca76}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 65% -10%,#1a3152 0,transparent 42%),var(--bg);color:var(--text);font-family:Manrope,system-ui,sans-serif}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;background-image:linear-gradient(#29374d 1px,transparent 1px),linear-gradient(90deg,#29374d 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(#000,transparent 90%);z-index:-1}
-a{color:inherit;text-decoration:none}button,select,input{font:inherit}.mono{font-family:"DM Mono",monospace}.muted{color:var(--muted)}.green{color:var(--green)}.red{color:var(--red)}
-header{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 4vw;border-bottom:1px solid #ffffff12;position:sticky;top:0;background:#070b12e8;backdrop-filter:blur(18px);z-index:20}.brand{display:flex;gap:11px;align-items:center;font-weight:800;letter-spacing:-.5px}.logo{height:36px;width:36px;border-radius:12px;background:linear-gradient(135deg,#8ea6ff,#42edb1);display:grid;place-items:center;color:#08121a;font-size:22px;box-shadow:0 0 30px #55e8b42b}.brand small{display:block;font-size:9px;letter-spacing:2px;color:var(--muted);margin-top:2px}.navlinks{display:flex;gap:22px;font-size:12px;color:#aab8cc}.navright{display:flex;gap:10px;align-items:center}.status{border:1px solid #48efb137;color:var(--green);background:#48efb10c;border-radius:99px;padding:8px 10px;font-size:10px}.btn{cursor:pointer;border:1px solid var(--line);border-radius:10px;background:#141e2d;color:var(--text);padding:10px 14px;transition:.2s}.btn:hover{border-color:var(--blue);transform:translateY(-1px)}.btn.primary{background:linear-gradient(110deg,#6f8dff,#536be0);border:0;font-weight:800}.wrap{width:min(1450px,93vw);margin:auto}.hero{min-height:420px;padding:56px 0 26px;display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}.eyebrow,.kicker{font-size:10px;letter-spacing:2px;color:var(--green);font-weight:800}.eyebrow:before{content:"";display:inline-block;width:23px;height:1px;background:var(--green);vertical-align:middle;margin-right:10px}h1{font-size:clamp(40px,5.2vw,72px);line-height:1.03;letter-spacing:-3.5px;margin:17px 0}.gradient{background:linear-gradient(100deg,#f4f7ff,#92aaff 55%,#4beab4);color:transparent;background-clip:text}.hero p{max-width:610px;color:#9cabc0;font-size:14px;line-height:1.8}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.tiny{font-size:10px;color:#71829a;margin-top:14px;line-height:1.6}
-.scene{height:330px;position:relative;display:grid;place-items:center;perspective:900px;overflow:hidden}.globe{width:235px;height:235px;position:relative;border-radius:50%;background:radial-gradient(circle at 32% 25%,#a4ffe3,#3ba6a3 20%,#18355a 54%,#080e19 74%);box-shadow:inset -28px -25px 45px #02050b,0 0 75px #4d8fff30;transform:rotateX(18deg) rotateY(-20deg);animation:float 7s ease-in-out infinite}.globe:before,.globe:after{content:"";position:absolute;inset:-20px;border:1px solid #82a7ff55;border-radius:50%;transform:rotateX(68deg) rotateZ(-15deg)}.globe:after{inset:-40px;transform:rotateY(65deg) rotateZ(20deg);border-color:#48efb14a}.ring{position:absolute;width:310px;height:110px;border:1px solid #789cff73;border-radius:50%;transform:rotate(-25deg);animation:spin 18s linear infinite}.ring:after{content:"";position:absolute;top:10px;left:48px;width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 15px var(--green)}.floatcard{position:absolute;background:#111b2bdc;border:1px solid #ffffff1b;border-radius:13px;padding:12px 14px;backdrop-filter:blur(12px);font-size:10px;box-shadow:0 18px 50px #0005}.floatcard b{display:block;font-size:16px;margin-top:5px}.fc1{top:20px;right:0}.fc2{bottom:24px;left:0}.fc3{bottom:20px;right:8px}@keyframes float{50%{transform:translateY(-11px) rotateX(22deg) rotateY(-8deg)}}@keyframes spin{to{transform:rotate(335deg)}}
-.ticker{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:18px 0 28px}.tick,.card{background:linear-gradient(145deg,#121c2aee,#0c131e);border:1px solid var(--line);border-radius:16px;min-width:0;box-shadow:0 18px 60px #0002}.tick{padding:16px}.ticktop{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;gap:8px}.price{font-size:20px;font-weight:800;margin:13px 0 5px;letter-spacing:-.5px}.change{font-size:10px}.section{padding:32px 0 42px;scroll-margin-top:85px}.sectionhead{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:18px}.section h2{font-size:clamp(24px,3vw,35px);letter-spacing:-1.3px;margin:7px 0}.sectionhead p{color:var(--muted);font-size:12px;margin:0;line-height:1.7}.grid2{display:grid;grid-template-columns:1.55fr .75fr;gap:15px}.card{padding:19px}.cardhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.cardhead h3{font-size:13px;margin:0}.select{background:#111b2a;border:1px solid var(--line);border-radius:8px;color:#d8e4f7;padding:8px;font-size:11px}.charttop{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.chart-price{font-size:12px;color:var(--green);font-family:"DM Mono",monospace}.chartbox{height:420px;min-width:0}.chart-controls{display:flex;gap:6px;flex-wrap:wrap}.tfbtn{font-size:10px;padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:#0b121d;color:#9cacc2;cursor:pointer}.tfbtn.active{background:#6c8cff22;border-color:#718fff;color:#dce5ff}.chartstatus{font-size:10px;color:var(--muted);margin-top:10px}.tag{font-size:9px;color:#a9baff;border:1px solid #6f8cff55;padding:5px 7px;border-radius:6px;white-space:nowrap}.pill{font-size:9px;padding:5px 7px;border-radius:6px;background:#48efb112;color:var(--green);border:1px solid #48efb12b}.pill.warn{background:#f3ca7612;color:var(--gold);border-color:#f3ca7630}.pill.redpill{background:#ff6e8312;color:var(--red);border-color:#ff6e8330}.signal{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #ffffff0c}.signal:last-child{border:0}.signal b{font-size:11px}.signal small{display:block;color:var(--muted);font-size:10px;margin-top:4px}.rules{padding:13px;border-radius:11px;background:#09111c;border:1px solid #243247;font-size:11px;line-height:1.8;color:#b7c6da}.rules strong{color:var(--green)}.tablewrap{overflow:auto;max-height:560px}table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:11px}th{text-align:left;color:#8292aa;font-size:9px;letter-spacing:.6px;font-weight:600;padding:12px 9px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#101824}td{padding:12px 9px;border-bottom:1px solid #ffffff0b}tr:last-child td{border:0}.empty{text-align:center;color:var(--muted);padding:25px}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stat{background:#0a111b;border:1px solid #243247;border-radius:10px;padding:12px}.stat label{display:block;color:var(--muted);font-size:9px;margin-bottom:8px}.stat strong{font-size:15px}.fieldgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;font-size:10px;color:#a3b2c6;margin-bottom:6px}.field input,.field select{width:100%;padding:11px;background:#090f18;color:var(--text);border:1px solid var(--line);border-radius:8px;outline:none}.resultbox{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.result{padding:13px;border:1px solid #284b47;border-radius:10px;background:#102329}.result label{display:block;color:#9bb8b7;font-size:9px;margin-bottom:7px}.result strong{color:var(--green);font-size:16px}.notice{padding:11px 13px;border:1px solid #f3ca7635;border-radius:9px;background:#f3ca760b;color:#d7c28e;font-size:10px;line-height:1.7}.footer{border-top:1px solid #ffffff12;padding:25px 0 35px;color:#71819a;font-size:10px;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
-@media(max-width:950px){.navlinks{display:none}.hero{grid-template-columns:1fr}.scene{height:290px}.grid2{grid-template-columns:1fr}.ticker{grid-template-columns:repeat(3,1fr)}.ticker .tick:nth-child(n+4){display:none}.chartbox{height:360px}}
-@media(max-width:600px){header{height:64px;padding:0 4vw}.status{display:none}.wrap{width:92vw}.hero{padding-top:36px;gap:0}h1{letter-spacing:-2px;font-size:45px}.scene{transform:scale(.9);margin:-10px 0}.ticker{grid-template-columns:1fr 1fr;gap:8px}.ticker .tick:nth-child(n+3){display:none}.tick{padding:13px}.price{font-size:17px}.section{padding:24px 0 30px}.sectionhead{align-items:start;flex-direction:column}.card{padding:14px}.chartbox{height:310px}.two{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.fieldgrid{grid-template-columns:1fr 1fr}.navright .btn{padding:8px 9px;font-size:10px}.fc1{right:-5px}.fc2{left:-5px}}
+:root{--bg:#040912;--p:#0a1726;--p2:#10243a;--line:#24516b;--t:#effaff;--m:#9bb7ca;--c:#39dfff;--g:#66f2d0;--r:#ff647c;--v:#66aaff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% 0,#11283d 0,transparent 38%),var(--bg);color:var(--t);font:14px system-ui,Arial;min-height:100vh}button,input,textarea,select{font:inherit}button{cursor:pointer;color:inherit}.app{display:grid;grid-template-columns:235px 1fr;min-height:100vh}.side{padding:22px 14px;border-right:1px solid var(--line);background:#060a10;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}.brand{display:flex;gap:10px;align-items:center;padding:4px 8px 25px}.logo{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(130deg,var(--c),var(--v));color:#061019;font-weight:1000;font-size:20px;box-shadow:0 0 24px #4de4ff35}.brand b{letter-spacing:1px}.brand small{display:block;color:var(--m);font-size:9px;letter-spacing:2px;margin-top:4px}.label{font-size:10px;letter-spacing:2px;color:#667d94;padding:12px}.nav{display:grid;gap:6px}.nav button{background:none;border:1px solid transparent;color:var(--m);text-align:left;padding:12px;border-radius:11px}.nav button.active,.nav button:hover{background:#112236;border-color:#29465d;color:white;box-shadow:inset 3px 0 var(--c)}.owner{margin-top:auto;border:1px solid var(--line);padding:12px;border-radius:14px;display:flex;align-items:center;gap:10px}.avatar{background:linear-gradient(135deg,#f4d078,var(--v));color:#111;border-radius:50%;width:36px;height:36px;display:grid;place-items:center;font-weight:900}.owner small{display:block;color:var(--m);font-size:10px;margin-top:3px}.note{color:#6f849a;font-size:10px;line-height:1.5}main{padding:22px clamp(14px,3vw,38px) 50px;min-width:0}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:25px;color:var(--m);font-size:11px}.pill{border:1px solid var(--line);border-radius:99px;padding:8px 12px}.btn{border:1px solid #2a4056;background:#122237;border-radius:10px;padding:10px 13px;font-size:12px;font-weight:700}.btn:hover{border-color:var(--c)}.primary{background:linear-gradient(100deg,var(--c),var(--g));color:#061018;border:0}.page{display:none;animation:fade .25s}.page.active{display:block}@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}.eyebrow{color:var(--c);font-size:10px;font-weight:800;letter-spacing:2px}.hero{display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:20px}.hero h1{font-size:clamp(32px,4vw,52px);line-height:1.04;margin:10px 0}.grad{background:linear-gradient(90deg,#fff,var(--c),var(--g));color:transparent;background-clip:text}.sub{color:var(--m);line-height:1.7;max-width:650px}.orbwrap{height:230px;display:grid;place-items:center;position:relative;perspective:700px}.orb{width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 32% 25%,#90fff7,#1d728b 12%,#0c2940 42%,#050912 72%);box-shadow:inset -20px -15px 30px #000b,0 0 55px #36dfff2b;animation:float 6s ease-in-out infinite;position:relative}.orb:before,.orb:after{content:"";position:absolute;inset:-17px;border:1px solid #4de4ff9a;border-radius:50%;transform:rotateX(65deg) rotateZ(-25deg)}.orb:after{inset:-30px;border-color:#b27aff9c;transform:rotateY(65deg) rotateZ(35deg)}@keyframes float{50%{transform:translateY(-10px) rotateY(12deg)}}.orbtext{position:absolute;bottom:8px;color:var(--m);font-size:9px;letter-spacing:2px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.metric,.panel,.labcard{background:linear-gradient(145deg,#101b29,#0a1019);border:1px solid var(--line);border-radius:16px;padding:15px;min-width:0}.metric small,.desc{color:var(--m);font-size:10px}.metric .val{font-size:22px;font-weight:850;margin:9px 0}.up{color:var(--g)}.red{color:var(--r)}.grid2{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}.head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:26px 0 12px}.head h2{font-size:18px;margin:0}.head p{font-size:10px;color:var(--m);margin:5px 0 0}.chart{width:100%;height:225px;display:block;margin-top:12px}.asset,.strategy,.alert{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #1b2a3a}.asset:last-child{border:0}.asset .right{margin-left:auto;text-align:right;font-weight:700;font-size:12px}.asset small,.strategy small{display:block;color:var(--m);font-size:10px;margin-top:4px}.search,.field input,.field select,.field textarea{width:100%;background:#070d14;border:1px solid #293c50;color:var(--t);border-radius:10px;padding:11px;outline:none}.strategy{border:1px solid #203247;border-radius:12px;padding:12px;margin:8px 0;background:#09121d}.num{width:34px;height:34px;display:grid;place-items:center;background:#122b3c;color:var(--c);border-radius:9px;font-weight:900}.meta{flex:1}.status{font-size:9px;border:1px solid #1c5b43;background:#0c251d;color:var(--g);border-radius:99px;padding:5px 8px}.status.pause{color:#ffd27b;background:#2a210e;border-color:#635027}.alert{border:1px solid #22364a;background:#0a141f;border-radius:11px;padding:12px;margin-top:8px;align-items:flex-start}.alert p{font-size:10px;color:var(--m);line-height:1.5;margin:5px 0 0}.alert .time{margin-left:auto;font-size:9px;color:var(--m)}.filters{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}.filter{border:1px solid var(--line);background:#0b131d;color:var(--m);border-radius:99px;padding:8px 12px;font-size:11px}.filter.active{background:var(--c);color:#051019}.newsgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.news{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#0d1621}.art{height:100px;display:grid;place-items:center;font-size:34px;background:radial-gradient(circle,#1a4155,#0d1725 70%)}.newsbody{padding:12px}.newsbody h3{font-size:12px;line-height:1.5}.newsbody p{font-size:10px;line-height:1.5;color:var(--m)}.newsbody small{font-size:9px;color:#70849b}.ownergrid{display:grid;grid-template-columns:190px 1fr;gap:12px}.ownernav{display:grid;gap:6px}.ownernav button{text-align:left;background:none;border:1px solid transparent;color:var(--m);padding:11px;border-radius:10px}.ownernav button.active{background:#132439;border-color:#2b475f;color:white}.field{display:grid;gap:6px;margin:10px 0}.field label{font-size:10px;color:var(--m)}textarea{min-height:160px;resize:vertical;font:12px/1.5 monospace!important}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.terminal{white-space:pre-wrap;background:#03070b;color:#9de9c0;border:1px solid #1d3040;border-radius:10px;padding:12px;font:11px/1.8 monospace;margin-top:12px}.labgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.labcard .big{font-size:24px;font-weight:900;margin:12px 0}.labcard p{color:var(--m);font-size:10px;line-height:1.6}.foot{color:#70849a;font-size:10px;line-height:1.6;margin-top:15px}.mobile{display:none}.toast{display:none;position:fixed;bottom:22px;right:20px;background:#122a25;border:1px solid #287858;border-radius:10px;padding:12px 15px;z-index:50;font-size:12px;max-width:90vw}
+@media(max-width:950px){.app{grid-template-columns:200px 1fr}.metrics{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.newsgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.app{display:block;padding-bottom:70px}.side{display:none}main{padding:15px 12px 30px}.top{margin-bottom:17px}.top .pill{display:none}.hero{grid-template-columns:1fr}.orbwrap{height:175px;grid-row:1}.orb{width:125px;height:125px}.hero h1{font-size:35px}.metrics{gap:7px}.metric{padding:11px}.metric .val{font-size:19px}.newsgrid{grid-template-columns:1fr 1fr}.news .art{height:80px}.newsbody{padding:9px}.ownergrid{grid-template-columns:1fr}.ownernav{grid-template-columns:repeat(2,1fr)}.labgrid{grid-template-columns:1fr 1fr}.mobile{display:grid;grid-template-columns:repeat(3,1fr);position:fixed;bottom:0;left:0;right:0;padding:7px 4px calc(7px + env(safe-area-inset-bottom));background:#05090ff2;border-top:1px solid var(--line);z-index:30}.mobile button{border:0;background:none;color:var(--m);font-size:9px;display:grid;gap:4px;justify-items:center;padding:4px}.mobile button span{font-size:18px}.mobile button.active{color:var(--c)}.chart{height:200px}}
+@media(max-width:390px){.newsgrid{grid-template-columns:1fr}.labgrid{grid-template-columns:1fr}}
+
+/* QUANTENGINE 2.0 advanced demo enhancements */
+:root{--gold:#ffc96b}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:linear-gradient(120deg,transparent 0%,#4de4ff08 40%,transparent 70%);background-size:220% 220%;animation:ambient 18s ease infinite}
+@keyframes ambient{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.panel,.metric,.labcard,.news,.strategy{transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.panel:hover,.metric:hover,.labcard:hover,.news:hover{transform:translateY(-3px);border-color:#3e6b88;box-shadow:0 12px 34px #0004}
+.logo{animation:logoPulse 3.5s ease-in-out infinite}
+@keyframes logoPulse{50%{box-shadow:0 0 32px #4de4ff70,0 0 60px #b27aff25}}
+.orb{animation:float 6s ease-in-out infinite,orbGlow 4s ease-in-out infinite}
+@keyframes orbGlow{50%{box-shadow:inset -20px -15px 30px #000b,0 0 75px #36dfff55}}
+.scanline{height:2px;position:absolute;left:0;right:0;top:0;background:linear-gradient(90deg,transparent,var(--c),transparent);opacity:.6;animation:scan 4s linear infinite;pointer-events:none}
+@keyframes scan{0%{transform:translateY(0)}100%{transform:translateY(220px)}}
+.controlrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.controlrow .search{flex:1;min-width:160px}
+.asset .asset-actions{margin-left:auto;display:flex;gap:5px}
+.mini{font-size:10px;padding:7px 9px}
+.calgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.event{border:1px solid var(--line);border-radius:11px;background:#0a141f;padding:12px}
+.event small{color:var(--m);font-size:9px}
+.event b{display:block;margin:7px 0;font-size:12px}
+.event .impact{font-size:9px;border-radius:99px;padding:4px 7px;display:inline-block;background:#2c2010;color:var(--gold)}
+.switchrow{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #1b2a3a}
+.switch{background:#1b2a3a;border:1px solid #38536a;border-radius:99px;padding:4px;width:48px;text-align:left}
+.switch.on{background:#123c30;border-color:#2a966f;text-align:right;color:var(--g)}
+.scanstatus{display:inline-flex;align-items:center;gap:7px;color:var(--g);font-size:10px}
+.scanstatus:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 10px currentColor;animation:blink 1.4s infinite}
+@keyframes blink{50%{opacity:.3}}
+@media(max-width:650px){.calgrid{grid-template-columns:1fr}.controlrow{align-items:stretch}.controlrow .search{min-width:100%}}
+
+
+/* Private owner access drawer */
+.owner-dot{position:relative;z-index:10;width:36px;height:36px;flex:0 0 36px;border-radius:50%;border:1px solid #3d776d;background:#061016;color:#65ffda;box-shadow:0 0 0 2px #06101680,0 4px 14px #0006;display:grid;place-items:center;font-size:17px;padding:0}
+.demo-guide-btn{display:flex;align-items:center;gap:10px}.owner-dot-inline{width:24px;height:24px;flex:0 0 24px;font-size:13px;box-shadow:none}.owner-dot:after{content:"";position:absolute;inset:-5px;border:1px solid #4de4ff22;border-radius:50%;animation:ownerPulse 2.8s infinite}
+@keyframes ownerPulse{50%{transform:scale(1.12);opacity:.45}}
+.owner-drawer{display:none;position:fixed;z-index:999;inset:0;background:#02070bd9;backdrop-filter:blur(8px);padding:16px;align-items:flex-end;justify-content:flex-start}
+.owner-drawer.open{display:flex}
+.owner-sheet{width:min(460px,100%);max-height:88vh;overflow:auto;background:#09141e;border:1px solid #2a4a59;border-radius:20px;padding:18px;box-shadow:0 20px 80px #000c;animation:sheetIn .2s ease}
+@keyframes sheetIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+.owner-sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.owner-sheet h2{margin:5px 0 8px;font-size:21px}
+.owner-sheet .muted{color:#91a4ba;font-size:12px;line-height:1.5}
+.owner-lockrow{display:flex;gap:8px;margin:14px 0}
+.owner-lockrow input{flex:1;min-width:0;background:#050c13;border:1px solid #2b4351;border-radius:10px;padding:12px;color:#edf6ff}
+.owner-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:14px}
+.owner-menu button{background:#0d2028;border:1px solid #264652;border-radius:11px;padding:12px 9px;text-align:left;color:#eaf8f7;font-size:12px}
+.owner-menu button span{display:block;color:#65ffda;font-size:17px;margin-bottom:7px}
+.owner-warning{font-size:10px;color:#ffc96b;line-height:1.5;margin-top:13px}
+.owner-gated{display:none}
+.owner-gated.unlocked{display:block}
+.owner-sheet .btn{white-space:normal}
+
+
+
+.global-market-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.market-chip{border:1px solid var(--line);background:#0a141f;border-radius:12px;padding:10px;text-align:left;color:var(--t);display:flex;flex-direction:column;gap:6px;min-width:0}.market-chip .market-photo{width:100%;height:82px;object-fit:cover;border-radius:8px;display:block;border:1px solid #24465b}.market-chip .market-emoji{display:none}
+.market-chip strong{display:block;font-size:12px;margin:2px 0}
+.market-chip small{color:var(--m);font-size:10px;line-height:1.4}
+.market-chip.active{border-color:var(--c);background:#102a32;box-shadow:inset 0 0 0 1px #4de4ff22}
+.market-results{margin-top:12px;display:none}.market-results.is-visible{display:block}
+.market-result{display:grid;grid-template-columns:1.2fr .7fr .7fr;gap:8px;align-items:center;padding:12px 0;border-bottom:1px solid #1b2a3a;font-size:12px}
+.market-result small{display:block;color:var(--m);font-size:10px;margin-top:4px}
+.global-filters{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px}
+@media(max-width:650px){.global-market-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.global-filters{grid-template-columns:1fr}.market-result{grid-template-columns:1fr auto}.market-result .mkt-type{display:none}}
+
+
+.owner-strategy-row{display:flex;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid #1b2a3a;flex-wrap:wrap}
+.owner-strategy-row .meta{flex:1;min-width:140px}
+.owner-strategy-row small{display:block;color:var(--m);font-size:10px;margin-top:4px}
+.custom-alert{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;padding:13px 0;border-bottom:1px solid #1b2a3a}
+.custom-alert .signal{background:#10342d;border:1px solid #286c59;color:#65ffb5;border-radius:9px;padding:8px;font-weight:800;font-size:11px}
+.custom-alert p{margin:4px 0;color:var(--m);font-size:11px;line-height:1.5}
+.custom-alert b{font-size:13px}
+@media(max-width:560px){.custom-alert{grid-template-columns:auto 1fr}.custom-alert .time{grid-column:2}}
+
+
+.contact-modal{display:none;position:fixed;inset:0;z-index:100;background:#02060bdc;backdrop-filter:blur(8px);padding:16px;overflow:auto;align-items:center;justify-content:center}.contact-modal.open{display:flex}.contact-modal-card{width:min(760px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:#07101a;border:1px solid #31516b;border-radius:18px;padding:clamp(14px,3vw,24px);box-shadow:0 25px 90px #000b}.contact-modal-card .grid2{grid-template-columns:1fr 1fr;gap:12px}.contact-modal-card .panel{padding:13px}.contact-modal-card textarea{min-height:95px}.contact-launch{cursor:default}.contact-launch:hover{border-color:#3e6b88}@media(max-width:650px){.contact-modal{padding:8px;align-items:flex-end}.contact-modal-card{max-height:92dvh;border-radius:18px 18px 10px 10px;padding:12px}.contact-modal-card .grid2{grid-template-columns:1fr}.contact-modal-card .head h2{font-size:16px}.contact-modal-card .field{margin:7px 0}.contact-modal-card .field input,.contact-modal-card .field select,.contact-modal-card .field textarea{padding:9px}.contact-modal-card .panel{padding:11px}}
+
+/* Premium Cyan Blue theme */
+:root{--glow:rgba(57,223,255,.22);--line-strong:#34728f}
+body{background:radial-gradient(ellipse at 70% -10%,rgba(23,108,151,.30),transparent 42%),radial-gradient(ellipse at 0% 55%,rgba(17,72,112,.12),transparent 35%),var(--bg)}
+.side{background:linear-gradient(180deg,#071321,#050a12);border-right-color:#1c4962}
+.logo{background:linear-gradient(135deg,#72f0ff,#1688cf);box-shadow:0 0 22px rgba(57,223,255,.34),inset 0 0 0 1px #b8f7ff}
+.nav button{transition:all .18s ease}
+.nav button.active,.nav button:hover{background:linear-gradient(100deg,rgba(31,132,176,.24),rgba(22,61,92,.35));border-color:#2b6684;box-shadow:inset 3px 0 var(--c),0 0 18px rgba(57,223,255,.08)}
+.btn{background:linear-gradient(145deg,#122b41,#0b1a2a);border-color:#285873;box-shadow:inset 0 1px rgba(255,255,255,.04);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
+.btn:hover{border-color:var(--c);box-shadow:0 0 16px rgba(57,223,255,.16);transform:translateY(-1px)}
+.primary{background:linear-gradient(110deg,#48e6ff,#53caff 52%,#72f2e0);color:#04121c;border:1px solid #a2f5ff;box-shadow:0 0 20px rgba(57,223,255,.20),inset 0 1px rgba(255,255,255,.48)}
+.metric,.panel,.labcard{background:linear-gradient(145deg,rgba(16,35,54,.97),rgba(7,15,26,.98));border-color:#21465e;box-shadow:0 8px 26px rgba(0,0,0,.13),inset 0 1px rgba(153,231,255,.035)}
+.metric:hover,.labcard:hover{border-color:#347b9a;box-shadow:0 0 20px rgba(57,223,255,.08)}
+.pill{border-color:#2a5b76;background:rgba(10,31,48,.55)}
+.orb{background:radial-gradient(circle at 32% 25%,#c8ffff,#31b9e5 13%,#105078 43%,#040a15 74%);box-shadow:inset -20px -15px 30px #000b,0 0 62px rgba(57,223,255,.24)}
+.orb:before{border-color:rgba(57,223,255,.7)}.orb:after{border-color:rgba(102,170,255,.65)}
+.search,.field input,.field select,.field textarea{background:#071321;border-color:#28516b;box-shadow:inset 0 1px 4px rgba(0,0,0,.18)}
+.search:focus,.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--c);box-shadow:0 0 0 3px rgba(57,223,255,.10)}
+.filter.active,.switch.on{box-shadow:0 0 16px rgba(57,223,255,.16)}
+.alert-tool summary{transition:color .15s ease}.alert-tool summary:hover{color:var(--c)}
+.owner{border-color:#28516b;background:rgba(8,23,37,.7)}
+.avatar{background:linear-gradient(135deg,#72f0ff,#1688cf);color:#06121b}
+@media(max-width:700px){main{padding-left:12px;padding-right:12px}.panel,.metric,.labcard{box-shadow:0 6px 20px rgba(0,0,0,.12),inset 0 1px rgba(153,231,255,.025)}}
+
+.advanced-lab-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.advanced-lab-grid .labcard{min-width:0}.advanced-lab-grid .field{margin-top:10px}.advanced-lab-grid input,.advanced-lab-grid select{width:100%;min-width:0}.advanced-lab-grid .terminal{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}.advanced-lab-grid .asset{margin-top:8px}.advanced-lab-grid .pill{white-space:normal}@media(max-width:680px){.advanced-lab-grid{grid-template-columns:1fr}.advanced-lab-grid .labcard{padding:15px}}
 </style>
-</head>
-<body>
-<header>
-<a class="brand" href="#"><span class="logo">⌁</span><span>QUANT<span style="color:var(--green)">ENGINE</span><small>FUTURES INTELLIGENCE</small></span></a>
-<nav class="navlinks"><a href="#markets">Markets</a><a href="#chart">Candlestick</a><a href="#strategy">My Strategy</a><a href="#scanner">Scanner</a><a href="#risk">Risk Tools</a></nav>
-<div class="navright"><span class="status">● LIVE DATA CHECK</span><a class="btn primary" href="/admin">Admin ↗</a></div>
-</header>
-<div id="announcement" style="display:none;width:min(1450px,93vw);margin:13px auto 0;padding:12px 15px;border:1px solid #48efb155;border-radius:10px;background:#48efb10d;color:#e1fff3;font-size:12px"></div>
-<main class="wrap">
-<section class="hero">
-<div><div class="eyebrow">NEXT-GEN MARKET ANALYTICS</div><h1>Read the market.<br><span class="gradient">Respect the setup.</span></h1><p>QuantEngine combines a TradingView-style candlestick workspace, CoinDCX market data, your exact daily futures break strategy, technical scanning and practical risk tools — in one responsive terminal.</p><div class="actions"><a class="btn primary" href="#chart">Open Candlestick Chart ↗</a><a class="btn" href="#strategy">View My Strategy</a></div><div class="tiny">Research and alerts only. No orders are placed. Data availability depends on CoinDCX API support and network conditions.</div></div>
-<div class="scene" id="scene"><div class="globe"></div><div class="ring"></div><div class="floatcard fc1">MARKET STRUCTURE<b class="green">DAILY FUTURES</b></div><div class="floatcard fc2">STRATEGY MODE<b>BREAK ALERTS <span class="green">●</span></b></div><div class="floatcard fc3">QUANT ENGINE<b>v2.0 ◆</b></div></div>
+<style>
+/* QUANTENGINE in-site AI Search Agent */
+#page-search .search-shell{margin:22px 0 18px;padding:clamp(14px,3vw,26px);border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,rgba(8,24,40,.98),rgba(4,12,23,.98));box-shadow:0 15px 45px rgba(0,0,0,.18)}
+#page-search .search-brand{display:flex;align-items:center;gap:12px;margin:0 auto 18px;max-width:900px}
+#page-search .search-orbit{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--c);border-radius:14px;color:var(--c);font-size:30px;box-shadow:0 0 24px rgba(57,223,255,.12)}
+#page-search .search-brand b{display:block;letter-spacing:.15em;font-size:13px}
+#page-search .search-brand small{display:block;color:var(--m);font-size:11px;margin-top:4px}
+#page-search .qe-search-form{display:flex;align-items:center;gap:10px;max-width:900px;margin:0 auto;padding:7px 8px 7px 16px;border:1px solid #32718c;border-radius:15px;background:#030b14;box-shadow:0 0 0 3px rgba(57,223,255,.04);transition:border-color .2s,box-shadow .2s}
+#page-search .qe-search-form:focus-within{border-color:var(--c);box-shadow:0 0 0 3px rgba(57,223,255,.1),0 0 24px rgba(57,223,255,.08)}
+#page-search .search-glass{color:var(--c);font-size:25px}
+#page-search #qeSearchInput{min-width:0;flex:1;border:0;outline:0;background:transparent;color:var(--t);padding:11px 2px;font-size:16px}
+#page-search .search-tabs{display:flex;gap:6px;overflow-x:auto;max-width:900px;margin:16px auto 12px;padding-bottom:4px}
+#page-search .search-tab{white-space:nowrap;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--m);padding:8px 12px;font-size:12px}
+#page-search .search-tab.active,#page-search .search-tab:hover{color:var(--c);border-color:#285c72;background:rgba(57,223,255,.08)}
+#page-search .search-notice{display:flex;align-items:flex-start;gap:9px;max-width:900px;margin:0 auto 15px;padding:11px 13px;border:1px solid rgba(57,223,255,.18);border-radius:10px;background:rgba(57,223,255,.045);font-size:12px;color:var(--m);line-height:1.55}
+#page-search .notice-dot{width:7px;height:7px;margin-top:5px;flex:none;border-radius:50%;background:var(--c);box-shadow:0 0 10px var(--c)}
+#page-search .search-welcome{text-align:center;padding:28px 10px 24px}
+#page-search .welcome-symbol{font-size:46px;color:var(--c);text-shadow:0 0 28px rgba(57,223,255,.24)}
+#page-search .search-welcome h3{margin:6px 0;font-size:20px}
+#page-search .search-welcome p{color:var(--m);font-size:13px}
+#page-search .suggestion-chips{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:18px}
+#page-search .suggestion-chips button{border:1px solid var(--line);border-radius:999px;background:#081a2a;color:var(--t);padding:9px 12px;font-size:12px}
+#page-search .suggestion-chips button:hover{border-color:var(--c);color:var(--c)}
+#page-search .qe-search-results{max-width:900px;margin:0 auto}
+#page-search .qe-result{padding:15px 2px;border-bottom:1px solid rgba(36,81,107,.55)}
+#page-search .qe-result-url{font-size:11px;color:var(--g);overflow-wrap:anywhere}
+#page-search .qe-result h3{font-size:17px;margin:5px 0;color:var(--c);font-weight:650}
+#page-search .qe-result h3 a{color:inherit;text-decoration:none}
+#page-search .qe-result h3 a:hover{text-decoration:underline}
+#page-search .qe-result p{font-size:13px;line-height:1.6;color:var(--m);margin:5px 0}
+#page-search .qe-result-actions{display:flex;gap:12px;flex-wrap:wrap;font-size:11px}
+#page-search .qe-result-actions a{color:var(--c);text-decoration:none}
+#page-search .search-config{padding:18px;margin:16px 0 30px}
+#page-search .config-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+#page-search .config-heading h3{margin:0 0 5px;font-size:16px}
+#page-search .config-row{display:grid;grid-template-columns:1fr minmax(180px,2fr) auto;gap:10px;align-items:center;margin:16px 0}
+#page-search .config-row label{font-size:12px;color:var(--m)}
+#page-search .config-row input{width:100%;min-width:0;border:1px solid var(--line);border-radius:9px;background:#030b14;color:var(--t);padding:11px}
+#page-search .setup-help{border-top:1px solid var(--line);padding-top:12px;color:var(--m);font-size:12px}
+#page-search .setup-help summary{cursor:pointer;color:var(--c);font-weight:650}
+#page-search .setup-help li{margin:8px 0;line-height:1.5}
+#page-search .setup-help a{color:var(--c)}
+#page-search .google-search-mount{margin:12px auto;max-width:900px;color:var(--t)}
+#page-search .google-search-mount[hidden]{display:none}
+#page-search .loading-search{padding:22px;text-align:center;color:var(--c)}
+#page-search .error-search{padding:14px;border:1px solid rgba(255,100,124,.35);border-radius:10px;color:#ff9dad}
+@media(max-width:650px){
+ #page-search .qe-search-form{gap:6px;padding-left:10px}
+ #page-search .qe-search-form .btn{padding:10px 12px}
+ #page-search #qeSearchInput{font-size:14px}
+ #page-search .config-row{grid-template-columns:1fr}
+ #page-search .search-brand{margin-bottom:14px}
+}
+</style>
+<style>
+.qe-global-search-wrap{position:relative;z-index:15;margin:0 0 18px}
+.qe-global-search{border:1px solid #24516b;border-radius:15px;padding:13px 15px 10px;background:linear-gradient(115deg,rgba(8,29,47,.98),rgba(3,13,24,.98));box-shadow:0 8px 28px rgba(0,0,0,.18)}
+.qe-global-search-brand{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.qe-mini-orbit{display:grid;place-items:center;width:31px;height:31px;border:1px solid #39dfff;border-radius:10px;color:#39dfff;font-size:23px;box-shadow:0 0 16px rgba(57,223,255,.12)}
+.qe-global-search-brand b{display:block;font-size:11px;letter-spacing:.14em;color:#eafaff}
+.qe-global-search-brand small{display:block;font-size:10px;color:#9bb7ca;margin-top:2px}
+.qe-global-search-form{display:flex;align-items:center;gap:9px;border:1px solid #32718c;border-radius:12px;padding:5px 6px 5px 12px;background:#020b14;transition:border-color .2s,box-shadow .2s}
+.qe-global-search-form:focus-within{border-color:#39dfff;box-shadow:0 0 0 3px rgba(57,223,255,.08)}
+.qe-global-search-form input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#effaff;padding:10px 2px;font-size:14px}
+.qe-global-search-icon{font-size:21px;color:#39dfff}
+.qe-top-search-links{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:8px 2px 0;font-size:10px;color:#9bb7ca}
+.qe-top-search-links button{border:1px solid #24516b;border-radius:999px;background:#071827;color:#bfe7f3;padding:5px 9px;font-size:10px}
+.qe-top-search-links button:hover{border-color:#39dfff;color:#39dfff}
+.qe-top-search-results{margin-top:9px;padding:13px 16px;border:1px solid #24516b;border-radius:13px;background:#061522;max-height:55vh;overflow:auto}
+.qe-top-search-results .qe-result{padding:12px 0;border-bottom:1px solid rgba(36,81,107,.5)}
+.qe-top-search-results .qe-result h3{margin:4px 0;color:#39dfff;font-size:16px}
+.qe-top-search-results .qe-result h3 a{color:inherit;text-decoration:none}
+.qe-top-search-results .qe-result p{color:#9bb7ca;line-height:1.55;margin:4px 0;font-size:12px}
+.qe-top-search-results .qe-result-url{font-size:10px;color:#66f2d0}
+.qe-top-search-results .qe-top-search-footer{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.qe-top-search-results .qe-top-search-footer a{color:#39dfff;font-size:12px}
+@media(max-width:650px){
+ .qe-global-search{padding:10px}
+ .qe-global-search-form{gap:5px;padding-left:8px}
+ .qe-global-search-form input{font-size:12px}
+ .qe-global-search-form .btn{padding:9px 10px;font-size:12px}
+ .qe-global-search-brand small{font-size:9px}
+}
+.qe-global-search-wrap{display:block}
+.page:not(#page-terminal) ~ #qeGlobalSearchWrap{display:none}
+</style>
+</head><body>
+<div class="app"><aside class="side"><div class="brand"><div class="logo">Q</div><div><b>QUANTENGINE 2.0</b><small>QUANT INTELLIGENCE</small></div></div><div class="label">WORKSPACE</div><nav class="nav"><button class="active" data-page="terminal">◈   Live Quant Terminal</button><button data-page="world">◎   World Pulse</button><button data-page="owner">⬡   Owner Command</button><button data-page="lab">✧   Quant Future Lab</button></nav><div class="label">QUICK ACCESS</div><nav class="nav"><button onclick="openAlertStrategyHub('strategies')">⌘   Strategy Scanner</button><button onclick="openAlertStrategyHub('alerts')">◉   Alert Center</button><button onclick="go('owner','content')">＋   Add Content</button></nav><div class="owner"><div class="avatar">K</div><div><b>Krish Kumar</b><small>Founder &amp; Owner</small></div></div><p class="note">INTERACTIVE DEMO ONLY<br/>Sample prices, alerts and news are not live.</p></aside>
+<main><div class="top"><span>QUANTENGINE / <b id="crumb" style="color:var(--c)">LIVE QUANT TERMINAL</b></span><div class="toolbar"><span class="pill">● REVIEW BUILD · DEMO DATA</span><button class="btn demo-guide-btn" onclick="toast('Tip: search assets, filter the scanner, inspect each strategy, and explore calendar + owner controls. All values are demo-only.')">Demo guide <span aria-label="Open private owner menu" class="owner-dot owner-dot-inline" role="button" tabindex="0" onclick="event.stopPropagation();openOwnerGate()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();openOwnerGate()}" title="Private owner access">•••</span></button></div></div>
+<div class="qe-global-search-wrap" id="qeGlobalSearchWrap">
+<div class="qe-global-search">
+<div class="qe-global-search-brand"><span class="qe-mini-orbit">⌕</span><span><b>AI SEARCH AGENT</b><small>Search the web from inside QUANTENGINE</small></span></div>
+<form class="qe-global-search-form" onsubmit="event.preventDefault();runQETopSearch()">
+<icon class="qe-global-search-icon">⌕</icon>
+<input aria-label="Search anything" autocomplete="off" id="qeTopSearchInput" placeholder="Search anything — companies, markets, science, websites..." type="search"/>
+<button class="btn primary" type="submit">Search</button>
+</form>
+<div class="qe-top-search-links"><span>Try:</span><button onclick="qeTopSuggestion('artificial intelligence')" type="button">AI</button><button onclick="qeTopSuggestion('global stock markets')" type="button">Markets</button><button onclick="qeTopSuggestion('quantitative trading')" type="button">Quant trading</button><button onclick="qeTopSuggestion('space exploration')" type="button">Science</button><button onclick="document.getElementById('qeTopSearchInput').focus();window.scrollTo({top:0,behavior:'smooth'})" type="button">Search Workspace ↗</button></div>
+</div>
+<div class="qe-top-search-results" hidden="" id="qeTopSearchResults"></div>
+</div>
+
+<section class="page active" id="page-terminal"><div class="hero"><div><div class="eyebrow">INTELLIGENCE · PRECISION · INNOVATION</div><h1>See the market.<br/><span class="grad">Test the edge.</span></h1><p class="sub">A unified quant workspace for market research, strategy previews and explainable alerts. Click around this prototype to preview the planned experience.</p><div class="toolbar"><button class="btn primary" onclick="openAlertStrategyHub()">Alert &amp; Strategy Hub</button><button class="btn" onclick="go('lab')">Explore Future Lab</button></div></div><div class="orbwrap"><div class="scanline"></div><div class="orb"></div><div class="orbtext"><span class="scanstatus">GLOBAL MARKET FIELD · DEMO</span></div></div></div>
+<div class="metrics"><div class="metric"><small>WATCHLIST ASSETS</small><div class="val">128</div><small>Sample universe · not live</small></div><div class="metric"><small>ACTIVE STRATEGIES</small><div class="val">04</div><small>Independent demo slots</small></div><div class="metric"><small>SIGNALS TODAY</small><div class="val">12</div><small>Illustrative count</small></div><div class="metric"><small>SCANNER STATUS</small><div class="val up" style="font-size:17px">READY</div><small>Demo · no API connection</small></div></div>
+<div class="grid2"><div class="panel"><div class="head" style="margin-top:0"><div><h2>Market Overview</h2><p class="desc">Illustrative chart · not real-time data</p></div><select class="search" id="marketPairFrame" style="width:auto"><option>BTCUSDT · 1s</option><option>BTCUSDT · 1m</option><option>BTCUSDT · 3m</option><option>BTCUSDT · 5m</option><option>BTCUSDT · 15m</option><option>BTCUSDT · 30m</option><option>BTCUSDT · 1h</option><option>BTCUSDT · 2h</option><option>BTCUSDT · 4h</option><option>BTCUSDT · 6h</option><option>BTCUSDT · 12h</option><option>BTCUSDT · 1D</option><option>BTCUSDT · 1W</option><option>BTCUSDT · 1M</option><option>ETHUSDT · 1h</option><option>GOLD · 1D</option><option>NIFTY 50 · 1D</option></select></div><svg class="chart" preserveaspectratio="none" viewbox="0 0 700 250"><defs><lineargradient id="fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#4de4ff" stop-opacity=".25"></stop><stop offset="1" stop-color="#4de4ff" stop-opacity="0"></stop></lineargradient></defs><g stroke="#1b2a3a"><path d="M0 30H700M0 80H700M0 130H700M0 180H700M0 230H700"></path><path d="M100 0V250M200 0V250M300 0V250M400 0V250M500 0V250M600 0V250"></path></g><path d="M0 180 L30 164 55 183 80 145 105 157 130 120 155 136 180 98 205 120 230 110 255 78 280 95 305 72 330 104 355 86 380 110 405 78 430 58 455 79 480 48 505 68 530 38 555 59 580 45 605 70 630 54 655 81 680 60 700 70 L700 250H0Z" fill="url(#fill)"></path><path d="M0 180 L30 164 55 183 80 145 105 157 130 120 155 136 180 98 205 120 230 110 255 78 280 95 305 72 330 104 355 86 380 110 405 78 430 58 455 79 480 48 505 68 530 38 555 59 580 45 605 70 630 54 655 81 680 60 700 70" fill="none" stroke="#4de4ff" stroke-width="2.5"></path><path d="M0 205H700" stroke="#ffc96b" stroke-dasharray="5 5"></path></svg><div class="toolbar" id="chartFrames"><button class="filter" onclick="setFrame(this)">1s</button><button class="filter" onclick="setFrame(this)">1m</button><button class="filter" onclick="setFrame(this)">3m</button><button class="filter" onclick="setFrame(this)">5m</button><button class="filter active" onclick="setFrame(this)">15m</button><button class="filter" onclick="setFrame(this)">30m</button><button class="filter" onclick="setFrame(this)">1h</button><button class="filter" onclick="setFrame(this)">2h</button><button class="filter" onclick="setFrame(this)">4h</button><button class="filter" onclick="setFrame(this)">6h</button><button class="filter" onclick="setFrame(this)">12h</button><button class="filter" onclick="setFrame(this)">1D</button><button class="filter" onclick="setFrame(this)">1W</button><button class="filter" onclick="setFrame(this)">1M</button></div></div><div class="panel"><div class="head" style="margin-top:0"><div><h2>Smart Watchlist</h2><p class="desc">Sample values only</p></div><button class="btn" onclick="toast('Watchlist edit is a demo action.')">＋ Add</button></div><div class="controlrow"><input class="search" id="assetSearch" placeholder="Search symbol, asset or market..."/><select class="search" id="assetClass" aria-label="Filter asset market" style="width:auto;flex:0 1 165px"><option value="all">All Markets</option><option value="crypto">Crypto</option><option value="forex">Forex</option><option value="stocks">Stocks</option><option value="commodities">Commodities</option><option value="indices">Indices</option><option value="futures">Futures</option><option value="etfs">ETFs</option><option value="bonds">Bonds</option><option value="options">Options</option></select><button class="btn mini" onclick="toast('Scanner filter preview only — no live feed connected.')">Scan</button></div><div id="assets" aria-live="polite"></div></div></div>
+
+<style>
+.hub-accordion{margin:18px 0 24px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:rgba(6,18,30,.72)}
+.hub-accordion-summary{display:flex;align-items:center;gap:12px;padding:18px 16px;cursor:pointer;list-style:none;position:relative;min-width:0}
+.hub-accordion-summary::-webkit-details-marker{display:none}
+.hub-summary-copy{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}
+.hub-summary-copy strong{font-size:clamp(19px,3vw,26px);color:var(--text);line-height:1.2}
+.hub-summary-copy small{font-size:13px;color:var(--muted);line-height:1.35}
+.hub-toggle{color:var(--c);font-size:0;line-height:1;min-width:22px;text-align:center}
+.hub-toggle:after{content:'⌄';font-size:22px}
+.hub-accordion[open] .hub-toggle:after{content:'⌃'}
+.hub-accordion-summary .pill{max-width:100px;white-space:normal;text-align:center}
+.hub-accordion .alert-hub{border:0;border-top:1px solid var(--line);border-radius:0;margin:0;animation:alertTileReveal .22s ease both}
+@media(max-width:480px){.hub-accordion-summary{padding:15px 12px;gap:8px}.hub-summary-copy small{font-size:12px}.hub-accordion-summary .pill{font-size:10px;padding:6px 8px}}
+
+.alert-hub .alert-tool-strip{
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px;
+  align-items:start; width:100%; padding:2px 1px 8px;
+}
+.alert-hub .compact-tool{
+  min-width:0; width:100%; align-self:start; overflow:hidden;
+  border:1px solid var(--line); border-radius:12px; padding:9px;
+  background:linear-gradient(145deg,rgba(10,29,47,.97),rgba(5,17,30,.98));
+  transition:box-shadow .28s ease,border-color .28s ease,background .28s ease;
+}
+.alert-hub .compact-tool[open]{
+  grid-column:span 4; width:100%; max-width:100%;
+  box-shadow:0 0 0 1px rgba(77,228,255,.10),0 8px 28px rgba(0,0,0,.18);
+  border-color:var(--c);
+}
+.alert-hub .compact-tool summary{
+  list-style:none; display:flex; flex-direction:column; align-items:flex-start; gap:5px;
+  cursor:pointer; min-height:76px; position:relative; padding-right:14px;
+  font-weight:700; color:var(--text); font-size:12px;
+}
+.alert-hub .compact-tool summary::-webkit-details-marker{display:none}
+.alert-hub .compact-tool summary:after{content:'+'; position:absolute; right:0; top:0; color:var(--c); font-size:18px}
+.alert-hub .compact-tool[open] summary:after{content:'−'}
+.alert-hub .compact-tool summary small{font-weight:400;color:var(--muted);font-size:10px;line-height:1.3}
+.alert-hub .tool-icon{display:grid;place-items:center;width:25px;height:25px;border-radius:8px;background:rgba(77,228,255,.10);color:var(--c);font-size:16px}
+.alert-hub .tool-title{font-size:12px;line-height:1.3;overflow-wrap:anywhere}
+.alert-hub .tool-content{
+  padding-top:12px;border-top:1px solid var(--line);margin-top:8px;
+  animation:alertTileReveal .24s ease both; max-height:58vh;overflow:auto;
+}
+@keyframes alertTileReveal{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.alert-hub .tool-content .head{margin-top:0}
+.alert-hub .tool-content .panel{padding:10px}
+.alert-hub .nested-pref{border-top:1px solid var(--line);margin-top:10px;padding-top:10px}
+.alert-hub .nested-pref summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--text);list-style:none}
+.alert-hub .nested-pref summary small{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:4px}
+.alert-hub .performance-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.alert-hub .performance-stat{border:1px solid var(--line);border-radius:9px;padding:10px;min-width:0}
+.alert-hub .performance-stat small,.alert-hub .performance-stat span{display:block;color:var(--muted);font-size:10px}
+.alert-hub .performance-stat b{display:block;font-size:23px;color:var(--c);margin:4px 0}
+.alert-hub .scanner-tool .tool-content{min-width:0}
+@media(max-width:620px){
+ .alert-hub .alert-tool-strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .alert-hub .compact-tool[open]{grid-column:span 2}
+ .alert-hub .compact-tool{padding:8px}
+ .alert-hub .compact-tool summary{min-height:72px}
+ .alert-hub .tool-title{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+ .alert-hub .compact-tool,.alert-hub .tool-content{transition:none;animation:none}
+}
+</style><details class="status-accordion global-accordion" id="global-explorer">
+<summary class="section-accordion-summary"><span class="section-mark">◎</span><span class="section-copy"><strong>Global Multi-Asset Explorer</strong><small>Search supported countries, exchanges and asset classes in one place</small></span><span class="hub-badge offline"><i></i>DATA CONNECTORS: NOT LIVE</span><span class="section-state global-explorer-state" aria-hidden="true"></span></summary>
+<div class="panel status-accordion-body" style="margin:0;border:0;border-top:1px solid var(--line);border-radius:0">
+<div class="global-market-grid" id="marketClassGrid">
+<button class="market-chip active" data-market-class="all" onclick="chooseMarketClass('all',this)"><img class="market-photo" alt="Global markets" src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&amp;fit=crop&amp;w=600&amp;q=80" onerror="this.style.display='none'"><span class="market-emoji">🌐</span><strong>All Markets</strong><small>Cross-asset discovery</small></button>
+<button class="market-chip" data-market-class="stocks" onclick="chooseMarketClass('stocks',this)"><img class="market-photo" alt="Global stock exchange" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&amp;fit=crop&amp;w=600&amp;q=80"><span class="market-emoji">📈</span><strong>Stocks &amp; ETFs</strong><small>US, India, Europe, Asia</small></button>
+<button class="market-chip" data-market-class="indices" onclick="chooseMarketClass('indices',this)"><img class="market-photo" alt="Financial market screens" src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&amp;fit=crop&amp;w=600&amp;q=80" onerror="this.style.display='none'"><span class="market-emoji">▥</span><strong>Global Indices</strong><small>Major benchmark indices</small></button>
+<button class="market-chip" data-market-class="commodities" onclick="chooseMarketClass('commodities',this)"><img class="market-photo" alt="Gold bars" src="https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&amp;fit=crop&amp;w=600&amp;q=80"><span class="market-emoji">🪙</span><strong>Commodities</strong><small>Gold, silver, energy, metals, agriculture</small></button>
+<button class="market-chip" data-market-class="crypto" onclick="chooseMarketClass('crypto',this)"><img class="market-photo" alt="Bitcoin cryptocurrency" src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?auto=format&amp;fit=crop&amp;w=600&amp;q=80"><span class="market-emoji">₿</span><strong>Crypto</strong><small>Spot &amp; futures, by exchange</small></button>
+<button class="market-chip" data-market-class="forex" onclick="chooseMarketClass('forex',this)"><img class="market-photo" alt="International currency" src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&amp;fit=crop&amp;w=600&amp;q=80"><span class="market-emoji">💱</span><strong>Forex</strong><small>Major currency pairs</small></button>
+</div>
+<div class="global-filters">
+<input class="search" id="globalMarketSearch" placeholder="Search symbol, company, commodity..."/>
+<select class="search" id="globalMarketCountry"><option value="all">All countries / regions</option><option>India</option><option>United States</option><option>United Kingdom</option><option>Japan</option><option>China</option><option>Hong Kong</option><option>Europe</option><option>Global / Multi-exchange</option></select>
+<select class="search" id="globalMarketType"><option value="all">All asset types</option><option value="stocks">Stocks &amp; ETFs</option><option value="indices">Indices</option><option value="commodities">Commodities</option><option value="crypto">Crypto</option><option value="forex">Forex</option></select>
+</div>
+<div class="toolbar" style="margin-top:10px"><button class="btn primary" onclick="searchGlobalMarkets()">Search Global Markets</button><button class="btn" onclick="resetGlobalMarkets()">Reset</button></div>
+<div class="market-results">
+<p class="foot" style="margin:10px 0 6px">Tap any market category above to filter the list. Tap an asset row to open its chart preview.</p>
+<div class="market-result" style="color:var(--m);font-size:10px;text-transform:uppercase;letter-spacing:1px"><b>Asset / Symbol</b><b>Region</b><b class="mkt-type">Type</b></div>
+<div id="globalMarketResults"></div>
+</div>
+<p class="foot">Demo catalogue only. Listed symbols are examples, not proof of live availability. Actual coverage depends on data provider, exchange permissions, market hours and supported timeframes. One-second candles may not be available for every market.</p>
+</div>
+</details>
 </section>
-<section class="section" id="markets"><div class="sectionhead"><div><div class="kicker">01 / MARKET PULSE</div><h2>Market overview</h2><p>CoinDCX spot snapshot for popular assets. Futures strategy below uses USDT futures instruments.</p></div><button class="btn" id="refreshMarkets">↻ Refresh</button></div><div class="ticker" id="ticker"><div class="tick">Loading market prices…</div></div></section>
-<section class="section" id="chart"><div class="sectionhead"><div><div class="kicker">02 / CHART STUDIO</div><h2>Advanced candlestick chart</h2><p>Zoom, pan, crosshair and timeframe controls, powered by Lightweight Charts.</p></div><span class="tag">TRADINGVIEW-STYLE UI</span></div>
-<div class="card"><div class="cardhead" style="flex-wrap:wrap"><div class="charttop"><select class="select" id="chartPair"><option value="B-BTC_USDT">BTC / USDT Futures</option><option value="B-ETH_USDT">ETH / USDT Futures</option><option value="B-SOL_USDT">SOL / USDT Futures</option><option value="B-XRP_USDT">XRP / USDT Futures</option><option value="B-DOGE_USDT">DOGE / USDT Futures</option></select><span class="chart-price" id="chartPrice">Waiting for candles…</span></div><div class="chart-controls"><button class="tfbtn active" data-tf="1">1m</button><button class="tfbtn" data-tf="3">3m</button><button class="tfbtn" data-tf="5">5m</button><button class="tfbtn" data-tf="15">15m</button><button class="tfbtn" data-tf="30">30m</button><button class="tfbtn" data-tf="60">1H</button><button class="tfbtn" data-tf="120">2H</button><button class="tfbtn" data-tf="240">4H</button><button class="tfbtn" data-tf="360">6H</button><button class="tfbtn" data-tf="720">12H</button><button class="tfbtn" data-tf="1D">1D</button><button class="tfbtn" data-tf="1W">1W</button><button class="tfbtn" data-tf="1M">1M</button></div></div><div id="priceChart" class="chartbox"></div><div class="chartstatus" id="chartStatus">Loading chart library and market data…</div></div></section>
-<section class="section" id="strategy"><div class="sectionhead"><div><div class="kicker">03 / YOUR STRATEGY</div><h2>Daily opposite-break monitor</h2><p>Implements the rules in your Python script. It scans active CoinDCX USDT futures and monitors prices every five minutes.</p></div><button class="btn" id="refreshStrategy">↻ Refresh scanner</button></div>
-<div class="grid2"><div class="card"><div class="cardhead"><h3>Active strategy setups</h3><span class="pill" id="strategyCount">Loading…</span></div><div class="tablewrap"><table><thead><tr><th>FUTURES</th><th>TREND</th><th>PRICE</th><th>ALERT LEVEL</th><th>A STOP LEVEL</th><th>STATUS</th></tr></thead><tbody id="strategyRows"><tr><td colspan="6" class="empty">Loading live strategy setups…</td></tr></tbody></table></div><div class="chartstatus" id="strategyStatus">First scan may take some time because active instruments are checked against daily candles.</div></div>
-<div class="card"><div class="cardhead"><h3>Exact strategy rules</h3><span class="tag">1D · NO ORDERS</span></div><div class="rules"><strong>UP TREND</strong><br>T High &lt; A High &lt; B High AND T Low &lt; A Low &lt; B Low.<br>Price below B Low → <strong>ALERT</strong>.<br>Price below A Low → <span class="red">ALERT OFF</span>.<hr style="border-color:#ffffff12;margin:12px 0"><strong>DOWN TREND</strong><br>T High &gt; A High &gt; B High AND T Low &gt; A Low &gt; B Low.<br>Price above B High → <strong>ALERT</strong>.<br>Price above A High → <span class="red">ALERT OFF</span>.</div><div class="signal"><div><b>Daily setup refresh</b><small>New UTC day / new daily candle check</small></div><span class="pill">Auto</span></div><div class="signal"><div><b>Price monitoring</b><small>Server checks every 5 minutes</small></div><span class="pill">5 min</span></div><div class="signal"><div><b>Trading orders</b><small>Scanner only — no exchange orders</small></div><span class="pill warn">Disabled</span></div></div></div></section>
-<section class="section" id="scanner"><div class="sectionhead"><div><div class="kicker">04 / SIGNAL DISCOVERY</div><h2>Technical scanner</h2><p>EMA trend and RSI momentum snapshot on selected futures pairs.</p></div><select class="select" id="scanTf"><option value="15m">15 minutes</option><option value="1h">1 hour</option><option value="4h">4 hours</option><option value="1D" selected>1 day</option></select></div><div class="card"><div class="tablewrap"><table><thead><tr><th>ASSET</th><th>LAST CANDLE</th><th>RSI 14</th><th>EMA BIAS</th><th>RULE SIGNAL</th></tr></thead><tbody id="scanRows"><tr><td colspan="5" class="empty">Loading scanner…</td></tr></tbody></table></div><div class="chartstatus" id="scanStatus">Technical scanner is a separate research filter, not your opposite-break strategy.</div></div></section>
-<section class="section" id="risk"><div class="sectionhead"><div><div class="kicker">05 / CAPITAL PROTECTION</div><h2>Risk & position calculator</h2><p>Calculate risk amount, position size and potential reward before a trade.</p></div></div><div class="two"><div class="card"><div class="cardhead"><h3>Trade parameters</h3><span class="tag">INSTANT</span></div><div class="fieldgrid"><div class="field"><label>Account balance (₹)</label><input id="balance" type="number" min="0" value="50000"></div><div class="field"><label>Risk per trade (%)</label><input id="riskpct" type="number" min="0" max="100" step=".1" value="1"></div><div class="field"><label>Entry price</label><input id="entry" type="number" min="0" step=".01" value="2500"></div><div class="field"><label>Stop-loss price</label><input id="stop" type="number" min="0" step=".01" value="2450"></div><div class="field"><label>Target price</label><input id="target" type="number" min="0" step=".01" value="2600"></div><div class="field"><label>Direction</label><select id="direction"><option value="long">Long / Buy</option><option value="short">Short / Sell</option></select></div></div><button class="btn primary" id="calc" style="width:100%;margin-top:5px">Calculate position size ↗</button></div><div class="card"><div class="cardhead"><h3>Risk summary</h3><span class="pill">Calculated locally</span></div><div class="resultbox"><div class="result"><label>MAX LOSS AT STOP</label><strong id="maxloss">₹500</strong></div><div class="result"><label>PROFIT AT TARGET</label><strong id="profit">₹1,000</strong></div><div class="result"><label>POSITION SIZE</label><strong id="units">10 units</strong></div><div class="result"><label>RISK / REWARD</label><strong id="rr">1 : 2.00</strong></div></div><p class="tiny" id="riskNote">Estimate excludes fees, slippage, funding, leverage and liquidation effects.</p></div></div></section>
-<footer class="footer"><span>© 2026 QUANTENGINE · FUTURES INTELLIGENCE</span><span>Research only · No auto-trading · API availability may vary</span></footer>
-</main>
-<script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+<section class="page" id="page-world"><div class="eyebrow">GLOBAL INTELLIGENCE FEED</div><h1 style="font-size:clamp(30px,4vw,45px)">World <span class="grad">Pulse</span></h1><p class="sub">Worldwide news and trending topics for a quant researcher. Headlines below are sample content, not current verified news.</p><div class="metrics"><div class="metric"><small>CATEGORIES</small><div class="val">06</div><small>AI · Markets · Crypto · World</small></div><div class="metric"><small>FEED STATUS</small><div class="val" style="font-size:17px;color:var(--gold)">PREVIEW</div><small>No news API connected</small></div><div class="metric"><small>TREND DATA</small><div class="val">—</div><small>Not connected</small></div><div class="metric"><small>UPDATED</small><div class="val" style="font-size:17px">DEMO</div><small>Sample cards only</small></div></div><div class="filters" id="newsFilters"><button class="filter active" data-cat="All">All</button><button class="filter" data-cat="AI &amp; Tech">AI &amp; Tech</button><button class="filter" data-cat="Markets">Markets</button><button class="filter" data-cat="Crypto">Crypto</button><button class="filter" data-cat="World">World</button><button class="filter" data-cat="Science">Science</button></div><input class="search" id="newsSearch" placeholder="Search sample headlines..." style="margin-bottom:13px"/><div class="newsgrid" id="newsGrid"><article class="news" data-cat="AI &amp; Tech"><div class="art">✧</div><div class="newsbody"><span class="eyebrow">AI &amp; TECH · SAMPLE</span><h3>AI research tools are reshaping complex data workflows</h3><p>Demo summary: analysts are experimenting with faster research workflows.</p><small>Sample card · not current news</small></div></article><article class="news" data-cat="Markets"><div class="art">⌁</div><div class="newsbody"><span class="eyebrow">MARKETS · SAMPLE</span><h3>Macro events can shift volatility across asset classes</h3><p>Demo summary: calendar context can help researchers model scenarios.</p><small>Sample card · no live feed</small></div></article><article class="news" data-cat="Crypto"><div class="art">₿</div><div class="newsbody"><span class="eyebrow">CRYPTO · SAMPLE</span><h3>Liquidity and funding metrics can add context to price action</h3><p>Demo summary: combine market structure with validated data.</p><small>Sample card · no live feed</small></div></article><article class="news" data-cat="World"><div class="art">◎</div><div class="newsbody"><span class="eyebrow">WORLD · SAMPLE</span><h3>Global policy developments can influence expectations</h3><p>Demo summary: compare timestamps with market reactions carefully.</p><small>Sample card · not verified news</small></div></article><article class="news" data-cat="Science"><div class="art">⌬</div><div class="newsbody"><span class="eyebrow">SCIENCE · SAMPLE</span><h3>New computing methods expand research tools</h3><p>Production version would link to an original source.</p><small>Sample card · no source connected</small></div></article><article class="news" data-cat="AI &amp; Tech"><div class="art">◉</div><div class="newsbody"><span class="eyebrow">AI &amp; TECH · SAMPLE</span><h3>Explainable AI can show why a system produced a result</h3><p>Demo summary: every market signal should show supporting conditions.</p><small>Sample card · not current news</small></div></article></div>
+<div class="head"><div><h2>Market Calendar</h2><p>Economic events layout · illustrative schedule, not current data</p></div><button class="btn" onclick="toast('Calendar is a design preview; no live event feed connected.')">Refresh calendar</button></div>
+<div class="calgrid">
+<div class="event"><small>09:30 · SAMPLE TIME</small><b>Major market open</b><span class="impact">HIGH IMPACT</span><p class="desc">Example event card with timezone-aware timestamps in production.</p></div>
+<div class="event"><small>14:00 · SAMPLE TIME</small><b>Economic data release</b><span class="impact">MEDIUM IMPACT</span><p class="desc">Production should link to an official calendar source.</p></div>
+<div class="event"><small>18:00 · SAMPLE TIME</small><b>Central bank commentary</b><span class="impact">HIGH IMPACT</span><p class="desc">Sample-only event; not an actual scheduled announcement.</p></div>
+</div>
+<p class="foot">Production news requires a reliable feed, original source links, publication timestamps and trend metrics before a story is labelled “viral”.</p></section>
+<section class="page" id="page-owner"><div class="eyebrow">PRIVATE CONTROL SURFACE · PREVIEW</div><h1 style="font-size:clamp(30px,4vw,45px)">Owner <span class="grad">Command</span></h1><p class="sub">Preview of your private admin workspace. Authentication and backend actions are not connected in this demo.</p><div class="metrics"><div class="metric"><small>OWNER</small><div class="val" style="font-size:17px">KRISH KUMAR</div><small>Founder &amp; Owner</small></div><div class="metric"><small>STRATEGY SLOTS</small><div class="val">04</div><small>Demo state</small></div><div class="metric"><small>PUBLISH STATUS</small><div class="val" style="font-size:17px;color:var(--gold)">DRAFT</div><small>Preview first</small></div><div class="metric"><small>PYTHON SANDBOX</small><div class="val" style="font-size:17px;color:var(--gold)">OFFLINE</div><small>No code execution</small></div></div><div class="ownergrid"><div class="panel"><h3>Owner Menu</h3><p class="desc">Choose a control area</p><div class="ownernav"><button class="active" data-tab="strategy">⌘ Strategy Lab</button><button data-tab="content">＋ Content Manager</button><button data-tab="design">✧ Design Settings</button><button data-tab="system">⚙ System Health</button></div></div><div class="panel" id="ownerPanel"><div class="head" style="margin-top:0"><div><h2>Strategy Lab</h2><p class="desc">Paste code and preview the workflow</p></div><span class="pill">SANDBOX OFFLINE</span></div><div class="field"><label>Strategy name</label><input id="sname" value="Strategy 5"/></div><div class="field"><label>Strategy type</label><select id="stype"><option>Python</option><option>Safe Rules</option></select></div><div class="field"><label>Risk : Reward</label><select id="rr"><option>1:2</option><option selected="">1:3</option><option>1:4</option><option>1:5</option><option>1:10</option></select></div><div class="field"><label>Timeframe</label><select id="tf"><option>5m</option><option selected="">15m</option><option>1h</option><option>4h</option><option>1D</option></select></div><div class="switchrow"><span>Duplicate-alert guard <small class="desc">Preview control</small></span><button class="switch on" onclick="this.classList.toggle('on');this.textContent=this.classList.contains('on')?'ON':'OFF'">ON</button></div>
+<div class="switchrow"><span>Require owner approval <small class="desc">Before publish</small></span><button class="switch on" onclick="this.classList.toggle('on');this.textContent=this.classList.contains('on')?'ON':'OFF'">ON</button></div>
+<div class="field"><label>Python code (demo only)</label><textarea id="code"># Demo only — this code is not executed.
+def generate_signal(market_data):
+    # Return signal, entry, stop, target and reason
+    return {"signal": "WAIT", "reason": "Await confirmation"}</textarea></div><div class="toolbar"><button class="btn" onclick="runDemo()">Run Test (demo)</button><button class="btn" onclick="saveDemo()">Save Draft</button><button class="btn primary" onclick="activateDemo()">Activate Preview</button><button class="btn" onclick="resetDemo()">Reset</button></div><div class="terminal" id="output">[demo] Sandbox offline.\n[demo] No Python code has been executed.\n[demo] Production requires an isolated worker.</div><p class="foot">Do not execute arbitrary Python in the main web server. Production needs an isolated sandbox with resource limits and controlled data access.</p></div></div><div class="head"><div><h2>Draft → Test → Preview → Approve → Publish</h2><p>Owner approval before public changes</p></div></div><div class="panel toolbar"><button class="btn" onclick="toast('Demo: preview opened.')">Preview Changes</button><button class="btn primary" onclick="toast('Demo only: publish is not connected.')">Publish Approved Changes</button><button class="btn" onclick="toast('Demo only: rollback needs version storage.')">Rollback</button><button class="btn" onclick="toast('Demo only: system log viewer preview.')">View Logs</button><button class="btn" onclick="toast('Demo only: backup/export is not connected.')">Export Backup</button><button class="btn" onclick="toast('Demo only: access management requires secure backend.')">Access Control</button><button class="btn" onclick="toast('Demo only: API keys must be stored securely server-side.')">API Settings</button></div></section>
+<section class="page" id="page-lab"><div class="eyebrow">RESEARCH · SIMULATION · COMPARISON</div><h1 style="font-size:clamp(30px,4vw,45px)">Quant Future <span class="grad">Lab</span></h1><p class="sub">Compare strategies, inspect scenarios and record experiments before considering a live signal. Alert &amp; Strategy Hub now lives here in Future Lab.</p>
+<details class="status-accordion" id="system-readiness">
+<summary class="section-accordion-summary"><span class="section-mark">∿</span><span class="section-copy"><strong>System Readiness &amp; Data Status</strong><small>Transparent status for this review build — not a live production connection.</small></span><span class="section-state"><i></i><b>Open</b><span class="chevron">⌄</span></span></summary>
+<div class="panel status-accordion-body" style="margin:0;border:0;border-top:1px solid var(--line);border-radius:0;background:linear-gradient(120deg,rgba(11,35,52,.96),rgba(7,18,30,.96))">
+<div class="grid2" style="gap:10px">
+<div class="asset"><div><b>Web Search</b><small>Wikipedia reference search works when internet access is available</small></div><span class="pill">LIMITED</span></div>
+<div class="asset"><div><b>AI Research Answers</b><small>AI model/API backend not connected</small></div><span class="pill">NOT CONNECTED</span></div>
+<div class="asset"><div><b>Market Data</b><small>Charts and prices are illustrative demo data</small></div><span class="pill">NOT LIVE</span></div>
+<div class="asset"><div><b>Owner Authentication</b><small>Preview controls only; server-side login not connected</small></div><span class="pill">PREVIEW ONLY</span></div>
+</div>
+<p class="foot" style="margin-bottom:0">No live trades, real-time prices, server alerts, secure admin session, or persistent backend changes are performed by this demo.</p>
+</div>
+</details><details class="hub-accordion" id="alert-strategy-hub">
+<summary class="hub-accordion-summary"><span class="hub-summary-copy"><strong>Alert &amp; Strategy Hub</strong><small>Four tools for alerts, scanning and analysis</small></span><span class="hub-badge"><i></i>DEMO ONLY</span><span class="section-state hub-state"><i></i><b>Open</b><span class="chevron">⌄</span></span></summary>
+<div class="panel alert-hub" style="padding:10px 10px 12px">
+<div class="alert-tool-strip" role="list">
+<details class="alert-tool compact-tool scanner-tool">
+<summary><span class="tool-icon">⌘</span><span class="tool-copy"><span class="tool-title">Multi-Strategy Scanner</span><small>4 strategies</small></span><span class="tool-open"><i></i>Open <b>›</b></span></summary>
+<div class="tool-content"><div class="head" id="strategies" style="margin-top:0"><div><h2>Multi-Strategy Scanner</h2><p>Review strategy status and manage scanner settings</p></div><button class="btn primary" onclick="go('owner')">＋ Add Strategy</button></div><div class="panel">
+<div class="controlrow">
+<input class="search" id="strategySearch" placeholder="Find strategy by name..."/>
+<select class="search" id="strategyStatus" style="width:auto;flex:0 1 150px"><option value="all">All statuses</option><option value="active">Active only</option><option value="paused">Paused only</option></select>
+<button class="btn mini" onclick="toggleAllStrategies()">Pause / Resume all</button>
+</div>
+<div id="strategyList"><div class="strategy"><div class="num">01</div><div class="meta"><b>Breakout Pulse</b><small>Python · R:R 1:3 · Last scan 12:14</small></div><span class="status">ACTIVE</span><button class="btn mini" onclick="toggleStrategy(this)">Pause</button></div><div class="strategy"><div class="num">02</div><div class="meta"><b>RSI Reversal</b><small>Rules · R:R 1:2 · Last scan 12:13</small></div><span class="status">ACTIVE</span><button class="btn mini" onclick="toggleStrategy(this)">Pause</button></div><div class="strategy"><div class="num">03</div><div class="meta"><b>Trend Rider</b><small>Python · R:R 1:4 · Last scan 12:12</small></div><span class="status">ACTIVE</span><button class="btn mini" onclick="toggleStrategy(this)">Pause</button></div><div class="strategy"><div class="num">04</div><div class="meta"><b>Gold Range Watch</b><small>Rules · R:R 1:5 · Last scan 12:11</small></div><span class="status pause">PAUSED</span><button class="btn mini" onclick="toggleStrategy(this)">Resume</button></div></div></div>
+<p class="foot">All prices, metrics, alerts and times on this page are illustrative. No live market data, scanner, Python execution or broker is connected.</p></div>
+</details>
+<details class="alert-tool compact-tool">
+<summary><span class="tool-icon">◉</span><span class="tool-copy"><span class="tool-title">Alert Center</span><small>Recent alerts</small></span><span class="tool-open"><i></i>Open <b>›</b></span></summary>
+<div class="tool-content">
+<summary><span>◉   Recent Alerts</span><small>Strategy filters and alert feed</small></summary>
+<div style="padding-top:12px">
+<div class="filters" id="alertFilters">
+<button class="filter active" data-alert-filter="all" onclick="filterAlertCards('all',this)">All</button>
+<button class="filter" data-alert-filter="1" onclick="filterAlertCards('1',this)">Strategy 1</button>
+<button class="filter" data-alert-filter="2" onclick="filterAlertCards('2',this)">Strategy 2</button>
+<button class="filter" data-alert-filter="3" onclick="filterAlertCards('3',this)">Strategy 3</button>
+<button class="filter" data-alert-filter="4" onclick="filterAlertCards('4',this)">Strategy 4</button>
+</div>
+<div id="mainAlertFeed">
+<div class="alert" data-alert-strategy="1"><div>↗</div><div><b>BTCUSDT · LONG setup</b><p>Breakout example · Entry 67,420 · SL 67,200 · Target 68,080 · R:R 1:3</p><p>Reason: sample breakout condition matched.</p></div><span class="time">S1 · DEMO</span></div>
+<div class="alert" data-alert-strategy="2"><div>◉</div><div><b>ETHUSDT · REVERSAL WATCH</b><p>RSI example; awaiting confirmation.</p><p>Reason: sample reversal condition.</p></div><span class="time">S2 · DEMO</span></div>
+<div class="alert" data-alert-strategy="3"><div>⌁</div><div><b>BTCUSDT · TREND WATCH</b><p>Trend filter aligned; wait for entry condition.</p><p>Reason: sample trend confirmation.</p></div><span class="time">S3 · DEMO</span></div>
+</div>
+</div>
+<details class="nested-pref"><summary>⚙ Alert Preferences <small>In-app · sound · push</small></summary>
+<summary><span>⚙   Alert Preferences</span><small>In-app · sound · push</small></summary>
+<div style="padding-top:8px">
+<div class="switchrow"><span>In-app alert cards</span><button class="switch on" onclick="this.classList.toggle('on');this.textContent=this.classList.contains('on')?'ON':'OFF'">ON</button></div>
+<div class="switchrow"><span>Sound notification</span><button class="switch" onclick="this.classList.toggle('on');this.textContent=this.classList.contains('on')?'ON':'OFF'">OFF</button></div>
+<div class="switchrow"><span>Push notification</span><button class="switch" onclick="toast('Push notifications need a real backend and permission setup.')">OFF</button></div>
+<p class="foot">Real-time alerts need a running scanner, market data, server-side storage and notification delivery. This feed is illustrative only.</p>
+</div>
+</details>
+</div>
+</details>
+<details class="alert-tool compact-tool">
+<summary><span class="tool-icon">▥</span><span class="tool-copy"><span class="tool-title">Alert Performance</span><small>Summary metrics</small></span><span class="tool-open"><i></i>Open <b>›</b></span></summary>
+<div class="tool-content">
+<p class="desc">Illustrative demo metrics only — no live scanner statistics.</p>
+<div class="performance-grid">
+<div class="performance-stat"><small>ALERTS TODAY</small><b>12</b><span>Sample count</span></div>
+<div class="performance-stat"><small>CONFIRMED</small><b>08</b><span>Demo examples</span></div>
+<div class="performance-stat"><small>FILTERED</small><b>04</b><span>Duplicate / weak</span></div>
+<div class="performance-stat"><small>DELIVERY</small><b>OFF</b><span>No live notifications</span></div>
+</div>
+<p class="foot">These are placeholder values, not measured performance or trading results.</p>
+</div>
+</details>
+<details class="alert-tool compact-tool">
+<summary><span class="tool-icon">ⓘ</span><span class="tool-copy"><span class="tool-title">Signal Explanation</span><small>Why this signal?</small></span><span class="tool-open"><i></i>Open <b>›</b></span></summary>
+<div class="tool-content">
+<p class="desc">Signal explanation example</p>
+<div class="panel">
+<b>BTCUSDT · LONG setup</b>
+<p>Conditions passed: breakout level, trend filter, and risk/reward threshold.</p>
+<p>Duplicate guard: enabled in this demo.</p>
+<p>Automatic orders: OFF.</p>
+</div>
+<p class="foot">Explanations are examples and are not generated from live market signals.</p>
+</div>
+</details>
+</div>
+</div>
+</details><div class="labgrid"><div class="labcard"><span class="eyebrow">STRATEGY ARENA</span><div class="big">04</div><p>Strategy slots for comparison.</p><button class="btn" onclick="toast('Real comparison needs historical data and a backtest engine.')">Compare strategies</button></div><div class="labcard"><span class="eyebrow">WHAT-IF SIMULATOR</span><div class="big">3 modes</div><p>Trend, range and high-volatility scenarios.</p><button class="btn" onclick="toast('Demo scenario only; no simulation engine connected.')">Run scenario</button></div><div class="labcard"><span class="eyebrow">PAPER TRADING</span><div class="big">OFF</div><p>Real paper mode needs a persistent trade ledger.</p><button class="btn" onclick="toast('Paper trading is not connected in this demo.')">Preview mode</button></div></div><div class="grid2" style="margin-top:13px"><div class="panel"><div class="head" style="margin-top:0"><div><h2>Strategy Comparison</h2><p class="desc">No measured metrics in this prototype</p></div></div><div class="asset"><div><b>Breakout Pulse</b><small>R:R 1:3</small></div><div class="right">Win rate —<small>Drawdown —</small></div></div><div class="asset"><div><b>RSI Reversal</b><small>R:R 1:2</small></div><div class="right">Win rate —<small>Drawdown —</small></div></div><div class="asset"><div><b>Trend Rider</b><small>R:R 1:4</small></div><div class="right">Win rate —<small>Drawdown —</small></div></div><p class="foot">Metrics should remain blank until a real backtest produces them.</p></div><div class="panel"><h3>Research Journal</h3><p class="desc">Record hypothesis, code version, test window and conclusion.</p><div class="field"><label>Experiment note</label><textarea id="note" placeholder="What did you change and why?" style="min-height:100px"></textarea></div><button class="btn primary" onclick="saveNote()">Save demo note</button><div id="notes"></div></div></div><div class="head"><div><h2>Research Tools</h2><p class="desc">Interactive previews of the next planned capabilities</p></div><span class="pill">DEMO MODE</span></div>
+<div class="labgrid advanced-lab-grid">
+<div class="labcard"><span class="eyebrow">AI RESEARCH AGENT</span><div class="big">Research</div><p>Enter a topic to preview a multi-source research brief layout.</p><div class="field"><label>Research topic</label><input id="researchTopic" placeholder="e.g. semiconductor market outlook"/></div><button class="btn primary" onclick="runResearchPreview()">Generate preview</button><div class="terminal" id="researchOutput" style="display:none;margin-top:10px"></div></div>
+<div class="labcard"><span class="eyebrow">PORTFOLIO RISK LAB</span><div class="big">Risk map</div><p>Illustrative exposure and drawdown calculator.</p><div class="field"><label>Portfolio value (₹)</label><input id="portfolioValue" type="number" min="1" value="100000"/></div><div class="field"><label>Hypothetical stress (%)</label><input id="portfolioStress" type="number" min="0" max="100" value="8"/></div><button class="btn" onclick="calcPortfolioRisk()">Calculate scenario</button><div id="portfolioRiskOutput" class="desc" style="margin-top:9px">Scenario not calculated.</div></div>
+<div class="labcard"><span class="eyebrow">BACKTEST STUDIO</span><div class="big">Test rules</div><p>Preview test configuration; no historical data is processed.</p><div class="field"><label>Strategy</label><select id="backtestStrategy"><option>Breakout Pulse</option><option>RSI Reversal</option><option>Trend Rider</option><option>Custom rules</option></select></div><div class="field"><label>Test window</label><select id="backtestWindow"><option>1 month</option><option>3 months</option><option>6 months</option><option>1 year</option></select></div><button class="btn" onclick="runBacktestPreview()">Preview test</button><div id="backtestOutput" class="desc" style="margin-top:9px">No test run.</div></div>
+<div class="labcard"><span class="eyebrow">ECONOMIC EVENT IMPACT</span><div class="big">Event lens</div><p>Frame a scenario around a macro event.</p><div class="field"><label>Event type</label><select id="macroEvent"><option>Central bank rate decision</option><option>Inflation / CPI</option><option>Employment report</option><option>GDP release</option></select></div><div class="field"><label>Asset class</label><select id="macroAsset"><option>Equity indices</option><option>Forex</option><option>Gold / commodities</option><option>Crypto</option></select></div><button class="btn" onclick="previewMacroImpact()">View scenario</button><div id="macroOutput" class="desc" style="margin-top:9px">No scenario selected.</div></div>
+<div class="labcard"><span class="eyebrow">SOURCE RELIABILITY</span><div class="big">Verify</div><p>Check source freshness and evidence before using an AI answer.</p><div class="field"><label>Source URL (demo)</label><input id="sourceUrl" placeholder="https://example.com/report"/></div><button class="btn" onclick="checkSourcePreview()">Check source</button><div id="sourceOutput" class="desc" style="margin-top:9px">No source checked. This does not verify a real website.</div></div>
+<div class="labcard"><span class="eyebrow">DATA QUALITY & STRESS TEST</span><div class="big">Guardrails</div><p>Planned checks for stale candles, missing values, spread and adverse market scenarios.</p><div class="asset"><div><b>Stale-data check</b><small>Preview rule only</small></div><span class="pill">READY TO BUILD</span></div><div class="asset"><div><b>Drawdown stress test</b><small>Requires real historical data</small></div><span class="pill">NOT CONNECTED</span></div><button class="btn" onclick="toast('Preview only: data-quality checks need connected market data.')">Review checks</button></div>
+</div><p class="foot">All new tools are interactive UI previews only. No real AI model, source verification, live economic calendar, portfolio connection, historical backtest or market-data processing is connected.</p><div class="contact-launch panel" style="margin:14px 0;display:flex;align-items:center;gap:12px;padding:12px 14px"><div style="width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:#102a3a;color:var(--c);font-size:20px;flex-shrink:0">✉</div><div style="flex:1;min-width:0"><b>Join QUANTENGINE · Contact Us</b><div class="desc" style="margin-top:4px">Users · Researchers · Team &amp; partners</div></div><button class="btn primary" onclick="openContactModal()" type="button">Open</button></div></section>
+<div aria-label="Join QUANTENGINE contact form" aria-modal="true" class="contact-modal" id="contactModal" onclick="if(event.target===this)closeContactModal()" role="dialog"><div class="contact-modal-card"><div class="head" id="contactUs" style="margin-top:0"><div><h2>Join QUANTENGINE · Contact Us</h2><p>Normal users, researchers and team/business partners can reach out.</p></div><button class="btn" onclick="closeContactModal()" type="button">✕ Close</button></div>
+<div class="grid2">
+<div class="panel">
+<h3>Send a message</h3><p class="desc">Tell us how you want to join. This demo stores submissions in this browser only.</p>
+<form id="contactForm" onsubmit="submitContact(event)">
+<div class="field"><label>Your name</label><input id="contactName" maxlength="100" placeholder="Enter your name" required=""/></div>
+<div class="field"><label>Email</label><input id="contactEmail" maxlength="160" placeholder="you@example.com" type="email"/></div>
+<div class="field"><label>WhatsApp / mobile number</label><input id="contactPhone" maxlength="40" placeholder="Country code + number" type="tel"/></div>
+<div class="field"><label>I want to join as</label><select id="contactRole"><option>Normal user</option><option>Team member</option><option>Business partner</option><option>Research collaborator</option></select></div>
+<div class="field"><label>Message</label><textarea id="contactMessage" maxlength="1500" placeholder="Tell us what you are interested in..." rows="4"></textarea></div>
+<button class="btn primary" type="submit">Send Message</button>
+</form><p class="foot">Demo limitation: submissions remain on this device/browser. A live website needs a backend and database to deliver them to the owner.</p>
+</div>
+<div class="panel"><h3>Contact directly</h3><p class="desc">WhatsApp and email buttons become usable after the owner adds official contact details in the private Contact Manager.</p>
+<div class="toolbar" style="margin-top:16px"><a class="btn" href="#contactUs" id="publicWhatsApp" onclick="return openContactChannel('whatsapp')">◉ WhatsApp</a><a class="btn" href="#contactUs" id="publicEmail" onclick="return openContactChannel('email')">✉ Email</a></div>
+<div class="asset" style="margin-top:18px"><div><b>Normal users</b><small>Product access and updates</small></div></div><div class="asset"><div><b>Team / business partners</b><small>Collaboration and partnership enquiries</small></div></div>
+<p class="foot" id="contactSetupStatus">Contact details have not been configured yet.</p>
+</div>
+</div>
+</div></div>
+<section class="page" id="page-search">
+<div class="eyebrow">QUANTENGINE INTELLIGENCE · SEARCH THE WEB</div>
+<h1 style="font-size:clamp(30px,4vw,45px)">AI Search <span class="grad">Agent</span></h1>
+<p class="desc" style="max-width:760px">Search for topics, websites, research, market information and more — without leaving the QUANTENGINE interface.</p>
+<div class="search-shell">
+<div class="search-brand"><span class="search-orbit">⌕</span><div><b>YQZAVENTH SEARCH</b><small>One search box · multiple discovery paths</small></div></div>
+<form class="qe-search-form" onsubmit="event.preventDefault();runQESearch()">
+<span class="search-glass">⌕</span>
+<input aria-label="Search the web" autocomplete="off" id="qeSearchInput" placeholder="Search anything on the web..." type="search">
+<button class="btn primary" type="submit">Search</button>
+</input></form>
+<div aria-label="Search categories" class="search-tabs" role="tablist">
+<button class="search-tab active" data-search-mode="web" onclick="setQESearchMode('web',this)" type="button">🌐 Web</button>
+<button class="search-tab" data-search-mode="news" onclick="setQESearchMode('news',this)" type="button">▤ News</button>
+<button class="search-tab" data-search-mode="images" onclick="setQESearchMode('images',this)" type="button">▧ Images</button>
+<button class="search-tab" data-search-mode="videos" onclick="setQESearchMode('videos',this)" type="button">▷ Videos</button>
+<button class="search-tab" data-search-mode="academic" onclick="setQESearchMode('academic',this)" type="button">⌬ Academic</button>
+<button class="search-tab" data-search-mode="finance" onclick="setQESearchMode('finance',this)" type="button">↗ Finance</button>
+</div>
+<div class="google-search-mount" hidden="" id="qeGoogleSearchMount"><div class="gcse-search"></div></div>
+<div class="search-notice" id="qeSearchNotice"><span class="notice-dot"></span><span><b>Reference search only — AI backend not connected.</b> Web mode searches Wikipedia inside QUANTENGINE. Other categories open external search providers; configure a search API and AI backend for a full in-site research experience.</span></div>
+<div class="qe-search-results" id="qeSearchResults">
+<div class="search-welcome">
+<div class="welcome-symbol">⌕</div><h3>Your web discovery workspace</h3>
+<p>Type a query to search reference articles, then use the category shortcuts for broader web results.</p>
+<div class="suggestion-chips">
+<button onclick="useQESuggestion('artificial intelligence')" type="button">Artificial intelligence</button>
+<button onclick="useQESuggestion('global financial markets')" type="button">Global financial markets</button>
+<button onclick="useQESuggestion('quantitative trading')" type="button">Quantitative trading</button>
+<button onclick="useQESuggestion('climate technology')" type="button">Climate technology</button>
+</div>
+</div>
+</div>
+</div>
+<div class="panel search-config">
+<div class="config-heading"><div><h3>Connect full web search</h3><p class="desc">Use Google's embedded Programmable Search Engine so results render on this page.</p></div><span class="pill">SETUP</span></div>
+<div class="config-row">
+<label for="qeSearchCx">Google Search Engine ID (cx)</label>
+<input id="qeSearchCx" placeholder="Paste your Programmable Search Engine ID" type="text">
+<button class="btn primary" onclick="saveQESearchCx()" type="button">Connect</button>
+</input></div>
+<details class="setup-help"><summary>How do I get the Search Engine ID?</summary>
+<ol>
+<li>Open <a href="https://programmablesearchengine.google.com/" rel="noopener" target="_blank">Google Programmable Search Engine</a>.</li>
+<li>Create a search engine and configure it to search the web, if that option is available for your account.</li>
+<li>Open its setup / overview page and copy the Search Engine ID (usually called <b>cx</b>).</li>
+<li>Paste the ID above and press Connect. The ID is saved in this browser only.</li>
+</ol>
+</details>
+<p class="foot">A Search Engine ID is required for embedded Google results. Results and coverage depend on your Google search-engine configuration. This demo does not claim to have Google's private ranking systems or a general-purpose AI model connected.</p>
+</div>
+</section>
+</main></div>
+<nav class="mobile"><button class="active" data-page="terminal"><span>◈</span>Terminal</button><button data-page="world"><span>◎</span>World Pulse</button><button data-page="lab"><span>✧</span>Future Lab</button></nav><div class="toast" id="toast"></div>
+<div aria-label="Private Owner Menu" aria-modal="true" class="owner-drawer" id="ownerDrawer" onclick="if(event.target===this)closeOwnerGate()" role="dialog">
+<div class="owner-sheet">
+<div class="owner-sheet-head"><div><div class="eyebrow">PRIVATE ACCESS · OWNER ONLY</div><h2>Owner Command</h2></div><button class="btn" onclick="closeOwnerGate()">✕</button></div>
+<p class="muted" id="ownerGateText">यह केवल Owner Command का UI preview है। असली authentication अभी connected नहीं है।</p>
+<div id="ownerLogin">
+<div class="panel" style="margin:10px 0"><b>Production security checklist</b><p class="desc">Server-side login · hashed passwords · session expiry · role checks on every protected API · rate limiting · audit logs · secrets stored as server environment variables.</p></div>
+<button class="btn primary" onclick="previewOwnerControls()">Preview Owner Controls</button>
+</div>
+<div class="owner-gated" id="ownerPrivateMenu">
+<div class="owner-menu">
+<button onclick="ownerGo('owner')"><span>⌘</span>Strategy Lab</button>
+<button onclick="ownerGo('owner','content')"><span>＋</span>Content Manager</button>
+<button onclick="showContactManager()"><span>✉</span>Contact Manager <b id="contactCountBadge" style="float:right">0</b></button>
+<button onclick="ownerGo('owner','design')"><span>✧</span>Design Settings</button>
+<button onclick="ownerGo('owner','system')"><span>⚙</span>System Health</button>
+<button onclick="ownerNotice('Strategy test preview opened; no code executes in this demo.')"><span>▷</span>Test Strategies</button>
+<button onclick="ownerNotice('Logs preview only; no server logs are connected.')"><span>≋</span>System Logs</button>
+<button onclick="ownerNotice('Backup/export is not connected in this demo.')"><span>⇩</span>Backup &amp; Export</button>
+<button onclick="ownerNotice('API settings preview. Never expose production API secrets in client-side HTML.')"><span>⌘</span>API Settings</button>
+<button onclick="ownerNotice('Publish is disabled in this demo; production should require owner approval.')"><span>⇧</span>Approve &amp; Publish</button>
+<button onclick="ownerNotice('Rollback preview only; version storage is not connected.')"><span>↶</span>Version Rollback</button>
+</div>
+<div class="panel" id="ownerContactManager" style="display:none;margin-top:12px">
+<div class="head" style="margin-top:0"><div><h2>Private Contact Manager</h2><p>View visitor enquiries and set official WhatsApp/email.</p></div><span class="pill">OWNER ONLY · DEMO</span></div>
+<div class="field"><label>Official WhatsApp number (country code, digits only)</label><input id="ownerWhatsApp" placeholder="e.g. 919876543210"/></div>
+<div class="field"><label>Official contact email</label><input id="ownerEmail" placeholder="contact@example.com" type="email"/></div>
+<div class="toolbar"><button class="btn primary" onclick="saveContactSettings()">Save Contact Details</button><button class="btn" onclick="renderContactMessages()">Refresh Messages</button><button class="btn" onclick="exportContactMessages()">Export CSV</button></div>
+<div id="ownerContactMessages" style="margin-top:14px"><p class="desc">No messages yet.</p></div>
+<p class="foot">Demo only: details and messages are stored in this browser's local storage, not sent to a server. Use secure server-side storage/authentication for production.</p>
+</div>
+<div class="toolbar" style="margin-top:12px"><button class="btn" onclick="lockOwner()">Lock Owner Panel</button><button class="btn" onclick="closeOwnerGate()">Close</button></div>
+</div>
+<p class="owner-warning">Security note: this review build offers UI preview only. Production must verify credentials server-side, protect every owner API route, use secure sessions and keep secrets off the client.</p>
+</div>
+</div>
 <script>
-const $=id=>document.getElementById(id), fmt=v=>Number.isFinite(Number(v))?Number(v).toLocaleString('en-IN',{maximumFractionDigits:4}):'—';
-function drawTicker(items){$('ticker').innerHTML=items.length?items.map(c=>`<div class="tick"><div class="ticktop"><b>${c.symbol}/INR</b><span>${c.source||'COINDCX'}</span></div><div class="price">${c.price?'₹'+fmt(c.price):'—'}</div><div class="change muted">${c.price?'Latest available spot price':'Data unavailable'}</div></div>`).join(''):'<div class="tick">Market data unavailable</div>'}
-async function loadMarkets(){try{const r=await fetch('/api/markets');const d=await r.json();if(!r.ok)throw Error(d.error);drawTicker(d.markets||[])}catch(e){drawTicker([])}}
-let chart,candleSeries,volumeSeries,currentTf='1';
-function initChart(){if(!window.LightweightCharts){$('chartStatus').textContent='Chart library did not load. Check internet connection and refresh.';return}chart=LightweightCharts.createChart($('priceChart'),{width:$('priceChart').clientWidth,height:$('priceChart').clientHeight,layout:{background:{color:'#0b121d'},textColor:'#8fa0b7',fontFamily:'DM Mono, monospace'},grid:{vertLines:{color:'#1b293b'},horzLines:{color:'#1b293b'}},crosshair:{mode:LightweightCharts.CrosshairMode.Normal},rightPriceScale:{borderColor:'#29384d'},timeScale:{borderColor:'#29384d',timeVisible:true,secondsVisible:false},handleScroll:true,handleScale:true});candleSeries=chart.addCandlestickSeries({upColor:'#48efb1',downColor:'#ff6e83',borderUpColor:'#48efb1',borderDownColor:'#ff6e83',wickUpColor:'#48efb1',wickDownColor:'#ff6e83'});volumeSeries=chart.addHistogramSeries({priceFormat:{type:'volume'},priceScaleId:'volume',scaleMargins:{top:.82,bottom:0},color:'#4c6b8c'});new ResizeObserver(()=>chart.applyOptions({width:$('priceChart').clientWidth,height:$('priceChart').clientHeight})).observe($('priceChart'));loadChart()}
-async function loadChart(){if(!chart)return;const pair=$('chartPair').value;$('chartStatus').textContent='Fetching real candles from CoinDCX…';try{const r=await fetch(`/api/chart?pair=${encodeURIComponent(pair)}&resolution=${currentTf}`);const d=await r.json();if(!r.ok)throw Error(d.error);const cs=(d.candles||[]).filter(c=>c.time>0).map(c=>({time:c.time,open:c.open,high:c.high,low:c.low,close:c.close}));if(!cs.length)throw Error('No candle data for this pair/timeframe.');candleSeries.setData(cs);volumeSeries.setData(d.candles.map(c=>({time:c.time,value:c.volume||0,color:c.close>=c.open?'#48efb155':'#ff6e8355'})));chart.timeScale().fitContent();$('chartPrice').textContent=`${pair.replace('B-','').replace('_USDT','')} · ${fmt(cs.at(-1).close)}`;$('chartStatus').textContent=`${cs.length} candles · Source: CoinDCX Futures · Last API refresh ${new Date().toLocaleTimeString()}`}catch(e){$('chartStatus').textContent='Chart data unavailable: '+e.message+' (API/timeframe support may vary).'}}
-document.querySelectorAll('[data-tf]').forEach(b=>b.addEventListener('click',()=>{currentTf=b.dataset.tf;document.querySelectorAll('[data-tf]').forEach(x=>x.classList.toggle('active',x===b));loadChart()}));$('chartPair').addEventListener('change',loadChart);
-function statusPill(status){return status==='ALERT'?'<span class="pill">🔔 ALERT</span>':status==='OFF'?'<span class="pill redpill">ALERT OFF</span>':'<span class="pill warn">WAITING</span>'}
-function coin(pair){return pair.replace(/^B-/,'').replace(/_USDT$/,'')}
-async function loadStrategy(){const body=$('strategyRows');try{const r=await fetch('/api/strategy');const d=await r.json();if(!r.ok)throw Error(d.error);$('strategyCount').textContent=`${d.valid_setups||0} setups / ${d.active_instruments||0} futures`;const rows=d.results||[];body.innerHTML=rows.length?rows.map(x=>`<tr><td><b>${coin(x.pair)}</b></td><td class="${x.trend==='UP'?'green':'red'}">${x.trend}</td><td class="mono">${x.price==null?'—':fmt(x.price)}</td><td class="mono">${fmt(x.alert_level)}</td><td class="mono">${fmt(x.stop_level)}</td><td>${statusPill(x.status)}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">No valid daily setups yet. Scan may still be running, or no pairs match your rules.</td></tr>';$('strategyStatus').textContent=`Last setup scan: ${d.last_setup_update?new Date(d.last_setup_update*1000).toLocaleString():'in progress'} · Last price check: ${d.last_price_update?new Date(d.last_price_update*1000).toLocaleTimeString():'waiting'}${d.error?' · API: '+d.error:''}`;if(d.events?.length)d.events.forEach(e=>{const title=`${e.type==='ALERT'?'🔔 ALERT':'🛑 ALERT OFF'} · ${coin(e.pair)}`;if('Notification'in window&&Notification.permission==='granted')new Notification(title,{body:`${e.message} · Price ${fmt(e.price)} · Level ${fmt(e.level)}`});})}catch(e){body.innerHTML=`<tr><td colspan="6" class="empty">Strategy API error: ${e.message}</td></tr>`;$('strategyStatus').textContent='Backend may still be starting or CoinDCX is temporarily unavailable.'}}
-async function loadScan(){const tf=$('scanTf').value;$('scanRows').innerHTML='<tr><td colspan="5" class="empty">Scanning candles…</td></tr>';try{const r=await fetch('/api/scan?timeframe='+tf);const d=await r.json();if(!r.ok)throw Error(d.error);$('scanRows').innerHTML=(d.results||[]).map(x=>`<tr><td><b>${x.symbol}</b></td><td class="mono">${fmt(x.price)}</td><td>${fmt(x.rsi)}</td><td class="${x.bias==='Bullish'?'green':x.bias==='Bearish'?'red':''}">${x.bias}</td><td><span class="tag">${x.signal}</span></td></tr>`).join('')||'<tr><td colspan="5" class="empty">No candle results returned by the API.</td></tr>';$('scanStatus').textContent=d.note||'Scan complete.'}catch(e){$('scanRows').innerHTML=`<tr><td colspan="5" class="empty">${e.message}</td></tr>`}}
-function calc(){const bal=+$('balance').value,risk=+$('riskpct').value,en=+$('entry').value,st=+$('stop').value,ta=+$('target').value,dir=$('direction').value,dist=Math.abs(en-st),td=Math.abs(ta-en);const valid=bal>0&&risk>0&&risk<=100&&en>0&&st>0&&ta>0&&dist>0&&((dir==='long'&&st<en&&ta>en)||(dir==='short'&&st>en&&ta<en));if(!valid){$('riskNote').textContent='Valid long: stop < entry < target. Valid short: target < entry < stop. Risk must be 0–100%.';return}const loss=bal*risk/100,units=loss/dist;$('maxloss').textContent='₹'+fmt(loss);$('profit').textContent='₹'+fmt(units*td);$('units').textContent=fmt(units);$('rr').textContent='1 : '+fmt(td/dist);$('riskNote').textContent='Approx. position value: ₹'+fmt(units*en)+'. Excludes fees, slippage, funding and liquidation effects.'}
-$('calc').addEventListener('click',calc);['balance','riskpct','entry','stop','target','direction'].forEach(id=>$(id).addEventListener('input',calc));$('refreshMarkets').addEventListener('click',loadMarkets);$('refreshStrategy').addEventListener('click',loadStrategy);$('scanTf').addEventListener('change',loadScan);
-async function publicSettings(){try{const r=await fetch('/api/public-settings');const s=await r.json();if(s.announcement){$('announcement').textContent=s.announcement;$('announcement').style.display='block'}if(!s.show_scanner){$('scanner').style.display='none';document.querySelector('a[href="#scanner"]').style.display='none'}if(!s.show_strategy){$('strategy').style.display='none';document.querySelector('a[href="#strategy"]').style.display='none'}}catch(e){}}
-function init3D(){if(!window.THREE)return;try{const host=$('scene'),scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(55,host.clientWidth/host.clientHeight,.1,100);camera.position.z=5;const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.7));renderer.setSize(host.clientWidth,host.clientHeight);renderer.domElement.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.75';host.prepend(renderer.domElement);const group=new THREE.Group();scene.add(group);const geometry=new THREE.IcosahedronGeometry(1.35,2),material=new THREE.MeshBasicMaterial({color:0x4beab4,wireframe:true,transparent:true,opacity:.23});const mesh=new THREE.Mesh(geometry,material);group.add(mesh);const points=[];for(let i=0;i<170;i++){const p=new THREE.Vector3((Math.random()-.5)*5,(Math.random()-.5)*3.6,(Math.random()-.5)*1.5);points.push(p.x,p.y,p.z)}const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.Float32BufferAttribute(points,3));group.add(new THREE.Points(pg,new THREE.PointsMaterial({color:0x8ba8ff,size:.018,transparent:true,opacity:.65})));function animate(){requestAnimationFrame(animate);group.rotation.y+=.0018;group.rotation.x=Math.sin(Date.now()*.0003)*.08;renderer.render(scene,camera)}animate();new ResizeObserver(()=>{camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();renderer.setSize(host.clientWidth,host.clientHeight)}).observe(host)}catch(e){}}
-loadMarkets();publicSettings();calc();initChart();loadScan();loadStrategy();init3D();setInterval(loadMarkets,60000);setInterval(loadStrategy,300000);setInterval(loadChart,60000);
-if('Notification'in window){/* Notifications are opt-in: browser will request permission only after a user action. */}
+const names={terminal:"LIVE QUANT TERMINAL",world:"WORLD PULSE",owner:"OWNER COMMAND",lab:"QUANT FUTURE LAB",search:'AI SEARCH AGENT'};
+function go(page,scroll){if(page==='search'){page='terminal';setTimeout(()=>document.getElementById('qeTopSearchInput')?.focus(),120)}document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id==='page-'+page));document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));document.getElementById('crumb').textContent=names[page];const searchWrap=document.getElementById('qeGlobalSearchWrap');if(searchWrap)searchWrap.style.display=page==='terminal'?'':'none';window.scrollTo({top:0,behavior:'smooth'});if(scroll)setTimeout(()=>document.getElementById(scroll)?.scrollIntoView({behavior:'smooth'}),150)}
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
+function setFrame(b){document.querySelectorAll("#chartFrames .filter").forEach(x=>x.classList.remove("active"));b.classList.add("active");const sel=document.getElementById("marketPairFrame");if(sel){const pair=(sel.value.split(" · ")[0]||"BTCUSDT");const match=[...sel.options].find(o=>o.value===pair+" · "+b.textContent);if(match)sel.value=match.value;}toast("Timeframe set to "+b.textContent+" · sample chart only")}
+function toast(s){let t=document.getElementById('toast');t.textContent=s;t.style.display='block';clearTimeout(window.tt);window.tt=setTimeout(()=>t.style.display='none',2700)}
+const smartWatchlistAssets=[
+{symbol:'BTCUSDT',name:'Bitcoin · crypto',type:'crypto',price:'$67,420',change:'+1.42%',dir:'up'},
+{symbol:'ETHUSDT',name:'Ethereum · crypto',type:'crypto',price:'$3,540',change:'+0.82%',dir:'up'},
+{symbol:'SOLUSDT',name:'Solana · crypto',type:'crypto',price:'$148.20',change:'+2.14%',dir:'up'},
+{symbol:'XRPUSDT',name:'XRP · crypto',type:'crypto',price:'$0.62',change:'−0.43%',dir:'red'},
+{symbol:'EUR/USD',name:'Euro / US Dollar · forex',type:'forex',price:'1.0842',change:'+0.12%',dir:'up'},
+{symbol:'GBP/USD',name:'British Pound / US Dollar · forex',type:'forex',price:'1.2710',change:'−0.08%',dir:'red'},
+{symbol:'USD/JPY',name:'US Dollar / Japanese Yen · forex',type:'forex',price:'149.82',change:'+0.21%',dir:'up'},
+{symbol:'USD/INR',name:'US Dollar / Indian Rupee · forex',type:'forex',price:'83.12',change:'+0.04%',dir:'up'},
+{symbol:'AAPL',name:'Apple Inc. · US stock',type:'stocks',price:'$227.50',change:'+0.64%',dir:'up'},
+{symbol:'MSFT',name:'Microsoft · US stock',type:'stocks',price:'$421.20',change:'+0.31%',dir:'up'},
+{symbol:'RELIANCE',name:'Reliance Industries · NSE',type:'stocks',price:'₹1,302',change:'−0.24%',dir:'red'},
+{symbol:'TCS',name:'Tata Consultancy Services · NSE',type:'stocks',price:'₹4,120',change:'+0.18%',dir:'up'},
+{symbol:'GOLD',name:'Gold · commodity',type:'commodities',price:'$2,415',change:'−0.24%',dir:'red'},
+{symbol:'SILVER',name:'Silver · commodity',type:'commodities',price:'$28.70',change:'+0.35%',dir:'up'},
+{symbol:'CRUDE OIL',name:'Crude Oil · commodity',type:'commodities',price:'$78.40',change:'−0.52%',dir:'red'},
+{symbol:'NATURAL GAS',name:'Natural Gas · commodity',type:'commodities',price:'$2.18',change:'+0.41%',dir:'up'},
+{symbol:'NIFTY 50',name:'Nifty 50 · India index',type:'indices',price:'24,180',change:'−0.31%',dir:'red'},
+{symbol:'SENSEX',name:'BSE Sensex · India index',type:'indices',price:'79,820',change:'+0.15%',dir:'up'},
+{symbol:'S&P 500',name:'S&P 500 · US index',type:'indices',price:'5,780',change:'+0.22%',dir:'up'},
+{symbol:'NASDAQ 100',name:'Nasdaq 100 · US index',type:'indices',price:'20,120',change:'+0.29%',dir:'up'},
+{symbol:'ES FUTURES',name:'S&P 500 E-mini · futures',type:'futures',price:'5,790',change:'+0.19%',dir:'up'},
+{symbol:'NQ FUTURES',name:'Nasdaq 100 E-mini · futures',type:'futures',price:'20,140',change:'+0.27%',dir:'up'},
+{symbol:'SPY',name:'SPDR S&P 500 ETF · ETF',type:'etfs',price:'$578.20',change:'+0.22%',dir:'up'},
+{symbol:'QQQ',name:'Invesco QQQ ETF · ETF',type:'etfs',price:'$492.10',change:'+0.29%',dir:'up'},
+{symbol:'US 10Y BOND',name:'US Treasury 10Y · bond',type:'bonds',price:'Yield 4.08%',change:'−0.02%',dir:'red'},
+{symbol:'US 2Y BOND',name:'US Treasury 2Y · bond',type:'bonds',price:'Yield 3.96%',change:'+0.01%',dir:'up'},
+{symbol:'AAPL CALL',name:'Apple call option · illustrative',type:'options',price:'Sample contract',change:'—',dir:''},
+{symbol:'SPY PUT',name:'SPY put option · illustrative',type:'options',price:'Sample contract',change:'—',dir:''}
+];
+function filterAssets(){let q=document.getElementById('assetSearch').value.trim().toLowerCase(),c=document.getElementById('assetClass').value;let rows=smartWatchlistAssets.filter(a=>(!q||(a.symbol+' '+a.name+' '+a.type).toLowerCase().includes(q))&&(c==='all'||a.type===c));let box=document.getElementById('assets');box.innerHTML='';if(!rows.length){box.innerHTML='<div class="desc" style="padding:14px 0">No matching sample assets. Try another symbol or market.</div>';return}rows.forEach(a=>{let row=document.createElement('div');row.className='asset';row.dataset.class=a.type;row.dataset.symbol=a.symbol;row.tabIndex=0;row.setAttribute('role','button');row.setAttribute('aria-label','Open chart for '+a.symbol);let left=document.createElement('div'),b=document.createElement('b'),sm=document.createElement('small');b.textContent=a.symbol;sm.textContent=a.name;left.append(b,sm);let right=document.createElement('div');right.className='right';right.append(document.createTextNode(a.price));let change=document.createElement('small');if(a.dir)change.className=a.dir;change.textContent=a.change;right.append(change);row.append(left,right);row.addEventListener('click',()=>openAssetChart(a.symbol,a.name));row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openAssetChart(a.symbol,a.name)}});box.append(row)})}
+document.getElementById('assetSearch').addEventListener('input',filterAssets);document.getElementById('assetClass').addEventListener('change',filterAssets);filterAssets();
+function toggleStrategy(btn){let card=btn.closest('.strategy'),status=card.querySelector('.status');let paused=status.classList.toggle('pause');status.textContent=paused?'PAUSED':'ACTIVE';btn.textContent=paused?'Resume':'Pause';filterStrategies();toast(status.textContent+' · demo state only')}
+function filterStrategies(){let q=(document.getElementById('strategySearch')?.value||'').toLowerCase(),s=document.getElementById('strategyStatus')?.value||'all';document.querySelectorAll('#strategyList .strategy').forEach(x=>{let name=x.innerText.toLowerCase(),paused=x.querySelector('.status').classList.contains('pause');x.style.display=name.includes(q)&&(s==='all'||(s==='paused'&&paused)||(s==='active'&&!paused))?'flex':'none'})}
+document.getElementById('strategySearch').addEventListener('input',filterStrategies);document.getElementById('strategyStatus').addEventListener('change',filterStrategies);
+function toggleAllStrategies(){let cards=[...document.querySelectorAll('#strategyList .strategy')],shouldPause=cards.some(x=>!x.querySelector('.status').classList.contains('pause'));cards.forEach(x=>{let st=x.querySelector('.status'),b=x.querySelector('button');st.classList.toggle('pause',shouldPause);st.textContent=shouldPause?'PAUSED':'ACTIVE';b.textContent=shouldPause?'Resume':'Pause'});filterStrategies();toast(shouldPause?'All strategies paused in demo':'All strategies resumed in demo')}
+document.querySelectorAll('#newsFilters button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#newsFilters button').forEach(x=>x.classList.remove('active'));b.classList.add('active');filterNews()}));document.getElementById('newsSearch').addEventListener('input',filterNews);
+function filterNews(){let c=document.querySelector('#newsFilters .active').dataset.cat,q=document.getElementById('newsSearch').value.toLowerCase();document.querySelectorAll('#newsGrid .news').forEach(n=>n.style.display=(c==='All'||n.dataset.cat===c)&&n.innerText.toLowerCase().includes(q)?'block':'none')}
+function toggleSignalExplanation(){const body=document.getElementById('signalExplanationBody');const btn=document.getElementById('signalExplanationToggle');const open=body.hidden;body.hidden=!open;btn.textContent=open?'Close':'Open';btn.setAttribute('aria-expanded',String(open));}
+function showAlert(n){filterAlertCards(String(n),document.querySelector(`[data-alert-filter="${n}"]`));document.getElementById('alertCenter').scrollIntoView({behavior:'smooth'});toast('Main Alert Center filtered to Strategy '+n+' · demo only')}
+function runDemo(){document.getElementById('output').textContent='[demo] Run requested.\n[demo] Python sandbox: OFFLINE\n[demo] Code was NOT executed.\n[demo] Production worker must validate and run in an isolated container.';toast('Demo test only — code not executed.')}
+function saveDemo(){let n=document.getElementById('sname').value||'Untitled';document.getElementById('output').textContent=`[demo] Draft preview: ${n}\n[demo] Type: ${document.getElementById('stype').value}\n[demo] R:R: ${document.getElementById('rr').value}\n[demo] Timeframe: ${document.getElementById('tf').value}\n[demo] Not saved to persistent server storage.`;toast('Draft simulated for '+n)}
+function activateDemo(){document.getElementById('output').textContent='[demo] Activation preview only.\n[demo] No scanner connected.\n[demo] No live alerts will be generated.';toast('Preview only — strategy not activated live')}
+function resetDemo(){document.getElementById('code').value='# Demo only — this code is not executed.\\ndef generate_signal(market_data):\\n    return {"signal": "WAIT", "reason": "Await confirmation"}';toast('Editor reset')}
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>openTab(b.dataset.tab)));
+function openTab(tab){document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));let p=document.getElementById('ownerPanel');let c={strategy:`<div class="head" style="margin-top:0"><div><h2>Strategy Lab</h2><p class="desc">Paste code and preview the workflow</p></div><span class="pill">SANDBOX OFFLINE</span></div><div class="field"><label>Strategy name</label><input id="sname" value="Strategy 5"></div><div class="field"><label>Strategy type</label><select id="stype"><option>Python</option><option>Safe Rules</option></select></div><div class="field"><label>Risk : Reward</label><select id="rr"><option>1:2</option><option selected>1:3</option><option>1:4</option><option>1:5</option><option>1:10</option></select></div><div class="field"><label>Timeframe</label><select id="tf"><option>5m</option><option selected>15m</option><option>1h</option><option>4h</option><option>1D</option></select></div><div class="switchrow"><span>Duplicate-alert guard <small class="desc">Preview control</small></span><button class="switch on" onclick="this.classList.toggle('on');this.textContent=this.classList.contains('on')?'ON':'OFF'">ON</button></div>
+<div class="switchrow"><span>Require owner approval <small class="desc">Before publish</small></span><button class="switch on" onclick="this.classList.toggle('on');this.textContent=this.classList.contains('on')?'ON':'OFF'">ON</button></div>
+<div class="field"><label>Python code (demo only)</label><textarea id="code"># Demo only — not executed\\ndef generate_signal(market_data):\\n    return {"signal": "WAIT", "reason": "Await confirmation"}</textarea></div><div class="toolbar"><button class="btn" onclick="runDemo()">Run Test (demo)</button><button class="btn" onclick="saveDemo()">Save Draft</button><button class="btn primary" onclick="activateDemo()">Activate Preview</button></div><div class="terminal" id="output">[demo] Sandbox offline. No Python executed.</div>`,content:`<h2>Content Manager</h2><p class="desc">Manage supported page content in production.</p><div class="field"><label>Section title</label><input placeholder="New research section"></div><div class="field"><label>Content</label><textarea placeholder="Write an announcement"></textarea></div><button class="btn" onclick="toast('Demo content previewed.')">Preview</button> <button class="btn primary" onclick="toast('Demo only: publish not connected.')">Publish</button>`,design:`<h2>Design Settings</h2><p class="desc">Preview visual controls</p><div class="asset"><div>3D globe animation</div><button class="btn" onclick="this.textContent=this.textContent==='ON'?'OFF':'ON'">ON</button></div><div class="asset"><div>Motion effects</div><button class="btn" onclick="this.textContent=this.textContent==='ON'?'OFF':'ON'">ON</button></div><div class="field"><label>Accent theme</label><select><option>Cyan / Green</option><option>Purple / Cyan</option><option>Gold / Green</option></select></div><button class="btn" onclick="toast('Preview setting only; not saved.')">Save preview</button>`,system:`<h2>System Health</h2><p class="desc">No services are connected in this demo.</p><div class="asset"><div>Market data provider<small>Not configured</small></div><div class="right red">OFFLINE</div></div><div class="asset"><div>Python sandbox<small>Not configured</small></div><div class="right red">OFFLINE</div></div><div class="asset"><div>Persistent database<small>Not configured</small></div><div class="right red">OFFLINE</div></div><div class="asset"><div>News feed<small>Not configured</small></div><div class="right red">OFFLINE</div></div>`};p.innerHTML=c[tab]}
+function saveNote(){let v=document.getElementById('note').value.trim();if(!v){toast('Write a note first.');return}let d=document.createElement('div');d.className='asset';let a=document.createElement('div'),b=document.createElement('b'),s=document.createElement('small');b.textContent='Demo experiment saved';s.textContent=v;a.append(b,s);d.append(a);document.getElementById('notes').prepend(d);document.getElementById('note').value=''}
+
+function openOwnerGate(){document.getElementById('ownerDrawer').classList.add('open');document.getElementById('ownerPassword').focus()}
+function closeOwnerGate(){document.getElementById('ownerDrawer').classList.remove('open')}
+function previewOwnerControls(){document.getElementById('ownerLogin').style.display='none';document.getElementById('ownerPrivateMenu').classList.add('unlocked');document.getElementById('ownerGateText').textContent='UI preview only — no authentication or privileged server actions are connected.';toast('Owner controls preview opened; no secure login is implied.')}
+function unlockOwner(){toast('This review build uses preview-only access. Server-side authentication must be implemented for production.');}
+function lockOwner(){document.getElementById('ownerLogin').style.display='block';document.getElementById('ownerPrivateMenu').classList.remove('unlocked');document.getElementById('ownerPassword').value='';document.getElementById('ownerGateText').textContent='Owner controls preview';toast('Owner demo menu locked.')}
+function ownerGo(page,tab){closeOwnerGate();go(page);if(tab)setTimeout(()=>openTab(tab),180)}
+function ownerNotice(message){toast(message)}
+document.getElementById('ownerPassword')?.addEventListener('keydown',e=>{if(e.key==='Enter')unlockOwner()});
+
+
+function filterAlertCards(which,btn){document.querySelectorAll('#alertFilters .filter').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('#mainAlertFeed [data-alert-strategy]').forEach(x=>x.style.display=(which==='all'||x.dataset.alertStrategy===which)?'flex':'none');}
+
+
+const globalDemoAssets=[
+ {symbol:'RELIANCE',name:'Reliance Industries',country:'India',type:'stocks',venue:'NSE · sample'},
+ {symbol:'TCS',name:'Tata Consultancy Services',country:'India',type:'stocks',venue:'NSE · sample'},
+ {symbol:'NIFTY 50',name:'Nifty 50 Index',country:'India',type:'indices',venue:'NSE · sample'},
+ {symbol:'SENSEX',name:'BSE Sensex',country:'India',type:'indices',venue:'BSE · sample'},
+ {symbol:'AAPL',name:'Apple Inc.',country:'United States',type:'stocks',venue:'NASDAQ · sample'},
+ {symbol:'MSFT',name:'Microsoft',country:'United States',type:'stocks',venue:'NASDAQ · sample'},
+ {symbol:'SPX',name:'S&P 500 Index',country:'United States',type:'indices',venue:'US index · sample'},
+ {symbol:'TSLA',name:'Tesla Inc.',country:'United States',type:'stocks',venue:'NASDAQ · sample'},
+ {symbol:'FTSE 100',name:'FTSE 100 Index',country:'United Kingdom',type:'indices',venue:'UK index · sample'},
+ {symbol:'NIKKEI 225',name:'Nikkei 225 Index',country:'Japan',type:'indices',venue:'Japan index · sample'},
+ {symbol:'HSI',name:'Hang Seng Index',country:'Hong Kong',type:'indices',venue:'HK index · sample'},
+ {symbol:'GOLD',name:'Gold Futures',country:'Global / Multi-exchange',type:'commodities',venue:'Contract varies · sample'},
+ {symbol:'SILVER',name:'Silver Futures',country:'Global / Multi-exchange',type:'commodities',venue:'Contract varies · sample'},
+ {symbol:'CRUDE OIL',name:'Crude Oil Futures',country:'Global / Multi-exchange',type:'commodities',venue:'Contract varies · sample'},
+ {symbol:'NATURAL GAS',name:'Natural Gas Futures',country:'Global / Multi-exchange',type:'commodities',venue:'Contract varies · sample'},
+ {symbol:'COPPER',name:'Copper Futures',country:'Global / Multi-exchange',type:'commodities',venue:'Contract varies · sample'},
+ {symbol:'BTC/USDT',name:'Bitcoin',country:'Global / Multi-exchange',type:'crypto',venue:'Spot / Futures vary · sample'},
+ {symbol:'ETH/USDT',name:'Ethereum',country:'Global / Multi-exchange',type:'crypto',venue:'Spot / Futures vary · sample'},
+ {symbol:'SOL/USDT',name:'Solana',country:'Global / Multi-exchange',type:'crypto',venue:'Spot / Futures vary · sample'},
+ {symbol:'XRP/USDT',name:'XRP',country:'Global / Multi-exchange',type:'crypto',venue:'Spot / Futures vary · sample'},
+ {symbol:'EUR/USD',name:'Euro / US Dollar',country:'Global / Multi-exchange',type:'forex',venue:'FX pair · sample'},
+ {symbol:'GBP/USD',name:'British Pound / US Dollar',country:'Global / Multi-exchange',type:'forex',venue:'FX pair · sample'},
+ {symbol:'USD/JPY',name:'US Dollar / Japanese Yen',country:'Global / Multi-exchange',type:'forex',venue:'FX pair · sample'},
+ {symbol:'USD/INR',name:'US Dollar / Indian Rupee',country:'India',type:'forex',venue:'FX pair · sample'},
+ {symbol:'AUD/USD',name:'Australian Dollar / US Dollar',country:'Global / Multi-exchange',type:'forex',venue:'FX pair · sample'},
+ {symbol:'USD/CAD',name:'US Dollar / Canadian Dollar',country:'Global / Multi-exchange',type:'forex',venue:'FX pair · sample'},
+ {symbol:'USD/CHF',name:'US Dollar / Swiss Franc',country:'Global / Multi-exchange',type:'forex',venue:'FX pair · sample'},
+ {symbol:'NZD/USD',name:'New Zealand Dollar / US Dollar',country:'Global / Multi-exchange',type:'forex',venue:'FX pair · sample'},
+ {symbol:'BNB/USDT',name:'BNB',country:'Global / Multi-exchange',type:'crypto',venue:'Spot / futures vary · sample'},
+ {symbol:'ADA/USDT',name:'Cardano',country:'Global / Multi-exchange',type:'crypto',venue:'Spot / futures vary · sample'},
+ {symbol:'DOGE/USDT',name:'Dogecoin',country:'Global / Multi-exchange',type:'crypto',venue:'Spot / futures vary · sample'},
+ {symbol:'AMZN',name:'Amazon.com Inc.',country:'United States',type:'stocks',venue:'NASDAQ · sample'},
+ {symbol:'GOOGL',name:'Alphabet Inc.',country:'United States',type:'stocks',venue:'NASDAQ · sample'},
+ {symbol:'NVDA',name:'NVIDIA Corporation',country:'United States',type:'stocks',venue:'NASDAQ · sample'},
+ {symbol:'DAX',name:'DAX 40 Index',country:'Europe',type:'indices',venue:'European index · sample'},
+ {symbol:'CAC 40',name:'CAC 40 Index',country:'Europe',type:'indices',venue:'French index · sample'},
+ {symbol:'BRENT',name:'Brent Crude Oil',country:'Global / Multi-exchange',type:'commodities',venue:'Commodity contract varies · sample'}
+];
+
+let qeCurrentChartSymbol='BTCUSDT';let qeChartIndicators={rsi:true,ma:false,macd:false};
+function openAssetChart(symbol,name){qeCurrentChartSymbol=symbol||'BTCUSDT';const title=name?`${symbol} · ${name}`:qeCurrentChartSymbol;document.getElementById('qeChartTitle').textContent=title;document.getElementById('qeChartSymbol').textContent=qeCurrentChartSymbol;document.getElementById('qeChartModal').classList.add('open');document.getElementById('qeChartModal').setAttribute('aria-hidden','false');document.body.style.overflow='hidden';renderAssetChart()}
+function closeAssetChart(){document.getElementById('qeChartModal').classList.remove('open');document.getElementById('qeChartModal').setAttribute('aria-hidden','true');document.body.style.overflow=''}
+function toggleChartIndicator(key,btn){qeChartIndicators[key]=!qeChartIndicators[key];btn.classList.toggle('active',qeChartIndicators[key]);renderAssetChart()}
+function renderAssetChart(){const frame=document.getElementById('qeChartFrame').value,style=document.getElementById('qeChartStyle').value;document.getElementById('qeChartTfLabel').textContent=frame;let seed=[...qeCurrentChartSymbol].reduce((a,c)=>a+c.charCodeAt(0),0)+(frame.length*7),vals=[];for(let i=0;i<64;i++){seed=(seed*9301+49297)%233280;let wave=50+Math.sin(i*.31+seed*.001)*13+Math.sin(i*.11)*9+(seed/233280-.5)*8;vals.push(Math.max(12,Math.min(88,wave)))}let grid='';for(let y=35;y<340;y+=60)grid+=`<line x1="8" y1="${y}" x2="990" y2="${y}" stroke="#1b2b3b"/>`;for(let x=80;x<990;x+=100)grid+=`<line x1="${x}" y1="8" x2="${x}" y2="340" stroke="#172637"/>`;let marks='';if(style==='line'){let pts=vals.map((v,i)=>`${8+i*15.4},${300-v*2.7}`).join(' ');marks=`<polyline points="${pts}" fill="none" stroke="#39dfff" stroke-width="2.6"/>`}else{marks=vals.map((v,i)=>{let x=12+i*15.4,open=vals[Math.max(0,i-1)],close=v,hi=Math.min(92,Math.max(open,close)+4+(i%4)),lo=Math.max(8,Math.min(open,close)-4-(i%3)),up=close>=open,color=up?'#53e6bd':'#ff6f88';return `<line x1="${x+4}" y1="${300-hi*2.7}" x2="${x+4}" y2="${300-lo*2.7}" stroke="${color}"/><rect x="${x}" y="${300-Math.max(open,close)*2.7}" width="8" height="${Math.max(3,Math.abs(close-open)*2.7)}" fill="${color}" rx="1"/>`}).join('')};let ma='';if(qeChartIndicators.ma){let points=vals.map((v,i)=>{let avg=vals.slice(Math.max(0,i-8),i+1).reduce((a,b)=>a+b,0)/Math.min(i+1,9);return `${8+i*15.4},${300-avg*2.7}`}).join(' ');ma=`<polyline points="${points}" fill="none" stroke="#ffc96b" stroke-width="2"/>`}document.getElementById('qeChartCanvas').innerHTML=`<svg viewBox="0 0 1000 350" preserveAspectRatio="none" role="img" aria-label="Illustrative ${style} chart for ${qeCurrentChartSymbol}">${grid}${marks}${ma}<text x="15" y="18" fill="#8ca8bf" font-size="11">${qeCurrentChartSymbol} · ${frame} · DEMO DATA</text></svg>`;let panel='';if(qeChartIndicators.rsi)panel+=`<div><b>RSI (14)</b><span>52.4 · illustrative</span><div class="qe-meter"><i style="width:52.4%"></i></div></div>`;if(qeChartIndicators.macd)panel+=`<div><b>MACD (12,26,9)</b><span>+0.18 · illustrative momentum</span><div class="qe-meter"><i style="width:61%"></i></div></div>`;if(qeChartIndicators.ma)panel+=`<div><b>Moving Average (9)</b><span>Overlay enabled · illustrative</span><div class="qe-meter"><i style="width:68%"></i></div></div>`;document.getElementById('qeIndicatorPanel').innerHTML=panel||'<div>No indicators selected. Choose RSI, Moving Average or MACD above.</div>'}
+document.getElementById('qeChartModal').addEventListener('click',e=>{if(e.target.id==='qeChartModal')closeAssetChart()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAssetChart()});
+document.querySelectorAll('#assets .asset[data-symbol]').forEach(row=>row.addEventListener('click',()=>openAssetChart(row.dataset.symbol,row.querySelector('small')?.textContent||'')));
+
+let selectedGlobalClass='all';
+function chooseMarketClass(type,btn){selectedGlobalClass=type;document.querySelectorAll('#marketClassGrid .market-chip').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.getElementById('globalMarketType').value=type==='all'?'all':type;const results=document.querySelector('.market-results');if(results){results.classList.add('is-visible');}searchGlobalMarkets();if(results){results.scrollIntoView({behavior:'smooth',block:'nearest'});}}
+function searchGlobalMarkets(){const resultsPanel=document.querySelector('.market-results');if(resultsPanel)resultsPanel.classList.add('is-visible');let q=document.getElementById('globalMarketSearch').value.trim().toLowerCase(),country=document.getElementById('globalMarketCountry').value,type=document.getElementById('globalMarketType').value;let rows=globalDemoAssets.filter(a=>(!q||(a.symbol+' '+a.name+' '+a.venue).toLowerCase().includes(q))&&(country==='all'||a.country===country)&&(type==='all'||a.type===type)&&(selectedGlobalClass==='all'||a.type===selectedGlobalClass));let out=document.getElementById('globalMarketResults');out.innerHTML='';if(!rows.length){out.innerHTML='<div class="alert"><div>⌕</div><div><b>No sample match</b><p>Try another symbol, country or asset type.</p></div></div>';return}rows.forEach(a=>{let row=document.createElement('div');row.className='market-result';row.setAttribute('role','button');row.tabIndex=0;row.setAttribute('aria-label','View chart for '+a.symbol);row.onclick=()=>openAssetChart(a.symbol,a.name);row.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openAssetChart(a.symbol,a.name)}};let one=document.createElement('div'),b=document.createElement('b'),small=document.createElement('small');b.textContent=a.symbol;small.textContent=a.name+' · '+a.venue;one.append(b,small);let two=document.createElement('div');two.textContent=a.country;let three=document.createElement('div');three.className='mkt-type';three.textContent=({stocks:'Stocks / ETF',indices:'Index',commodities:'Commodity',crypto:'Crypto',forex:'Forex'})[a.type];row.append(one,two,three);out.append(row)})}
+function resetGlobalMarkets(){document.getElementById('globalMarketSearch').value='';document.getElementById('globalMarketCountry').value='all';document.getElementById('globalMarketType').value='all';selectedGlobalClass='all';document.querySelectorAll('#marketClassGrid .market-chip').forEach(x=>x.classList.toggle('active',x.dataset.marketClass==='all'));searchGlobalMarkets()}
+document.getElementById('globalMarketSearch')?.addEventListener('input',searchGlobalMarkets);document.getElementById('globalMarketCountry')?.addEventListener('change',searchGlobalMarkets);document.getElementById('globalMarketType')?.addEventListener('change',()=>{selectedGlobalClass='all';document.querySelectorAll('#marketClassGrid .market-chip').forEach(x=>x.classList.toggle('active',x.dataset.marketClass==='all'));searchGlobalMarkets()});
+searchGlobalMarkets();
+
+
+let ownerCustomStrategies=[];
+function ownerStrategyTest(){
+ const name=document.getElementById('ownerStrategyName').value.trim();
+ const symbol=document.getElementById('ownerStrategySymbol').value.trim();
+ const code=document.getElementById('ownerStrategyCode').value.trim();
+ const out=document.getElementById('ownerStrategyResult');
+ if(!name||!symbol||!code){out.textContent='Test failed: strategy name, market symbol and code are required.';toast('Fill strategy name, symbol and code.');return}
+ // Safe UI-only checks; no Python code is executed in this static HTML demo.
+ const hasCommentOrLogic=code.split('\n').some(line=>line.trim()&&!line.trim().startsWith('#'));
+ const hasDangerousPatterns=/\b(exec|eval|os\.system|subprocess|socket)\b/.test(code);
+ if(!hasCommentOrLogic){out.textContent='Test failed: add at least one non-comment code line.';return}
+ if(hasDangerousPatterns){out.textContent='Review required: code contains a potentially unsafe operation name. It was not executed.';return}
+ out.textContent='Demo checks passed: fields are present and code was reviewed for a few unsafe patterns. This is NOT a Python runtime test.';
+ toast('Demo strategy checks completed.');
+}
+function ownerStrategyActivate(){
+ const name=document.getElementById('ownerStrategyName').value.trim();
+ const symbol=document.getElementById('ownerStrategySymbol').value.trim().toUpperCase();
+ const code=document.getElementById('ownerStrategyCode').value.trim();
+ const frame=document.getElementById('ownerStrategyFrame').value;
+ const rr=document.getElementById('ownerStrategyRR').value;
+ const out=document.getElementById('ownerStrategyResult');
+ if(!name||!symbol||!code){out.textContent='Activation blocked: enter name, symbol and code first.';toast('Complete strategy fields first.');return}
+ if(!ownerCustomStrategies.some(s=>s.name===name&&s.symbol===symbol)){
+  ownerCustomStrategies.unshift({name,symbol,frame,rr,code,active:true,created:new Date().toLocaleTimeString()});
+ } else {
+  const s=ownerCustomStrategies.find(s=>s.name===name&&s.symbol===symbol);Object.assign(s,{frame,rr,code,active:true});
+ }
+ renderOwnerStrategyQueue();
+ const feed=document.getElementById('frontStrategyAlertFeed');
+ const empty=feed.querySelector('.desc');if(empty)empty.remove();
+ const card=document.createElement('div');card.className='custom-alert';
+ const badge=document.createElement('span');badge.className='signal';badge.textContent='DEMO';
+ const body=document.createElement('div');
+ const title=document.createElement('b');title.textContent=name+' · '+symbol;
+ const p1=document.createElement('p');p1.textContent='Strategy activated for '+frame+' · Risk:Reward '+rr+'. Waiting for real market conditions in a production scanner.';
+ const p2=document.createElement('p');p2.textContent='No LONG/SHORT signal generated: this HTML demo does not run Python or scan live prices.';
+ body.append(title,p1,p2);
+ const time=document.createElement('span');time.className='time';time.textContent='ACTIVATED · '+new Date().toLocaleTimeString();
+ card.append(badge,body,time);feed.prepend(card);
+ out.textContent='Activated in demo UI. It now appears in Owner Strategy Queue and Front-Page Strategy Alerts. This does not start a real scanner.';
+ toast('Strategy added to demo alerts area.');
+}
+function renderOwnerStrategyQueue(){
+ const q=document.getElementById('ownerStrategyQueue');q.innerHTML='';
+ if(!ownerCustomStrategies.length){q.innerHTML='<p class="desc">No custom strategies activated yet.</p>';return}
+ ownerCustomStrategies.forEach(s=>{
+  const row=document.createElement('div');row.className='owner-strategy-row';
+  const meta=document.createElement('div');meta.className='meta';
+  const b=document.createElement('b');b.textContent=s.name;
+  const small=document.createElement('small');small.textContent=s.symbol+' · '+s.frame+' · R:R '+s.rr+' · ACTIVE (demo)';
+  meta.append(b,small);
+  const pause=document.createElement('button');pause.className='btn';pause.textContent=s.active?'Pause':'Resume';pause.onclick=()=>{s.active=!s.active;small.textContent=s.symbol+' · '+s.frame+' · R:R '+s.rr+' · '+(s.active?'ACTIVE':'PAUSED')+' (demo)';pause.textContent=s.active?'Pause':'Resume';toast(s.name+' '+(s.active?'resumed':'paused')+' in demo')};
+  row.append(meta,pause);q.append(row);
+ });
+}
+function ownerStrategyClear(){document.getElementById('ownerStrategyCode').value='';document.getElementById('ownerStrategyResult').textContent='Code cleared.'}
+
+
+function openContactModal(){document.getElementById('contactModal').classList.add('open');document.body.style.overflow='hidden'}
+function closeContactModal(){document.getElementById('contactModal').classList.remove('open');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeContactModal()});
+const CONTACT_MSG_KEY='qorvena_demo_contact_messages_v1';
+const CONTACT_SETTINGS_KEY='qorvena_demo_contact_settings_v1';
+function readContactMessages(){try{return JSON.parse(localStorage.getItem(CONTACT_MSG_KEY)||'[]')}catch(e){return []}}
+function readContactSettings(){try{return JSON.parse(localStorage.getItem(CONTACT_SETTINGS_KEY)||'{}')}catch(e){return {}}}
+function submitContact(e){e.preventDefault();const entry={id:Date.now(),name:document.getElementById('contactName').value.trim(),email:document.getElementById('contactEmail').value.trim(),phone:document.getElementById('contactPhone').value.trim(),role:document.getElementById('contactRole').value,message:document.getElementById('contactMessage').value.trim(),created:new Date().toLocaleString(),status:'New'};if(!entry.email&&!entry.phone){toast('Please add an email or WhatsApp/mobile number so the team can reply.');return}const list=readContactMessages();list.unshift(entry);localStorage.setItem(CONTACT_MSG_KEY,JSON.stringify(list));document.getElementById('contactForm').reset();updateContactCount();toast('Demo message saved in this browser. Live delivery needs backend setup.');}
+function updateContactCount(){const n=readContactMessages().length;const b=document.getElementById('contactCountBadge');if(b)b.textContent=n;}
+function showContactManager(){const panel=document.getElementById('ownerContactManager');panel.style.display=panel.style.display==='none'?'block':'none';if(panel.style.display==='block'){const cfg=readContactSettings();document.getElementById('ownerWhatsApp').value=cfg.whatsapp||'';document.getElementById('ownerEmail').value=cfg.email||'';renderContactMessages();panel.scrollIntoView({behavior:'smooth',block:'nearest'});}}
+function saveContactSettings(){const whatsapp=document.getElementById('ownerWhatsApp').value.replace(/[^0-9]/g,'');const email=document.getElementById('ownerEmail').value.trim();if(!whatsapp&&!email){toast('Add a WhatsApp number or email first.');return}localStorage.setItem(CONTACT_SETTINGS_KEY,JSON.stringify({whatsapp,email}));updatePublicContactLinks();toast('Contact details saved in this browser demo.');}
+function updatePublicContactLinks(){const cfg=readContactSettings();const wa=document.getElementById('publicWhatsApp');const em=document.getElementById('publicEmail');if(cfg.whatsapp){wa.href='https://wa.me/'+cfg.whatsapp;wa.target='_blank';wa.rel='noopener';}else{wa.href='#contactUs';wa.removeAttribute('target')}if(cfg.email){em.href='mailto:'+cfg.email;}else{em.href='#contactUs'}const st=document.getElementById('contactSetupStatus');if(st)st.textContent=(cfg.whatsapp||cfg.email)?'Contact details configured for this browser demo.':'Contact details have not been configured yet.';}
+function openContactChannel(channel){const cfg=readContactSettings();if(channel==='whatsapp'&&cfg.whatsapp){window.open('https://wa.me/'+cfg.whatsapp,'_blank','noopener');return false}if(channel==='email'&&cfg.email){window.location.href='mailto:'+cfg.email;return false}toast('Owner must add the official '+(channel==='whatsapp'?'WhatsApp number':'email')+' in private Contact Manager first.');return false;}
+function renderContactMessages(){const el=document.getElementById('ownerContactMessages');if(!el)return;const list=readContactMessages();el.innerHTML='';if(!list.length){el.innerHTML='<p class="desc">No messages yet. Visitor submissions will appear here in this browser demo.</p>';updateContactCount();return}list.forEach(m=>{const card=document.createElement('div');card.className='alert';const body=document.createElement('div');body.style.flex='1';const title=document.createElement('b');title.textContent=m.name+' · '+m.role;const meta=document.createElement('p');meta.textContent='Email: '+(m.email||'—')+' | WhatsApp: '+(m.phone||'—')+' | '+m.created;const msg=document.createElement('p');msg.textContent=m.message||'(No message added)';const status=document.createElement('p');status.textContent='Status: '+(m.status||'New');const actions=document.createElement('div');actions.className='toolbar';const reply=document.createElement('button');reply.className='btn';reply.textContent='Mark Contacted';reply.onclick=()=>{const all=readContactMessages();const x=all.find(a=>a.id===m.id);if(x)x.status='Contacted';localStorage.setItem(CONTACT_MSG_KEY,JSON.stringify(all));renderContactMessages()};const del=document.createElement('button');del.className='btn';del.textContent='Delete';del.onclick=()=>{localStorage.setItem(CONTACT_MSG_KEY,JSON.stringify(readContactMessages().filter(a=>a.id!==m.id)));renderContactMessages()};actions.append(reply,del);body.append(title,meta,msg,status,actions);card.append(body);el.append(card)});updateContactCount();}
+function exportContactMessages(){const list=readContactMessages();if(!list.length){toast('No contact messages to export.');return}const cols=['name','email','phone','role','message','created','status'];const esc=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const csv=[cols.join(','),...list.map(m=>cols.map(c=>esc(m[c])).join(','))].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.download='qorvena-contact-messages.csv';a.click();URL.revokeObjectURL(a.href);}
+updateContactCount();updatePublicContactLinks();
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const strip = document.querySelector('.alert-tool-strip');
+  if(!strip) return;
+  strip.querySelectorAll('.compact-tool').forEach(function(item){
+    item.addEventListener('toggle', function(){
+      if(item.open){
+        strip.querySelectorAll('.compact-tool').forEach(function(other){
+          if(other !== item) other.open = false;
+        });
+      }
+    });
+  });
+});
+</script>
+<script>
+function openAlertStrategyHub(tool){
+  go('lab');
+  window.setTimeout(function(){
+    const hub = document.getElementById('alert-strategy-hub');
+    if(!hub) return;
+    hub.open = true;
+    hub.scrollIntoView({behavior:'smooth',block:'start'});
+    hub.classList.remove('hub-highlight');
+    void hub.offsetWidth;
+    hub.classList.add('hub-highlight');
+    window.setTimeout(function(){hub.classList.remove('hub-highlight');},900);
+    if(tool){
+      const target = tool==='strategies' ? hub.querySelector('.scanner-tool') : hub.querySelectorAll('.alert-tool')[1];
+      if(target){target.open=true; window.setTimeout(()=>target.scrollIntoView({behavior:'smooth',block:'start'}),180);}
+    }
+  },180);
+}
+</script>\n
+<script>
+let qeSearchMode = 'web';
+let qeGoogleScriptLoading = false;
+let qePendingGoogleQuery = '';
+function setQESearchMode(mode, button){
+  qeSearchMode = mode;
+  document.querySelectorAll('#page-search .search-tab').forEach(x=>x.classList.toggle('active',x===button));
+  const input=document.getElementById('qeSearchInput');
+  const hints={web:'Search anything on the web...',news:'Search latest news...',images:'Search images...',videos:'Search videos...',academic:'Search academic papers...',finance:'Search markets, stocks and companies...'};
+  if(input) input.placeholder=hints[mode]||hints.web;
+  const cx=localStorage.getItem('qe_google_cx')||'';
+  const notice=document.getElementById('qeSearchNotice');
+  if(mode!=='web'){
+    const providers={
+      news:['Google News','https://news.google.com/search?q=','Bing News','https://www.bing.com/news/search?q='],
+      images:['Google Images','https://www.google.com/search?tbm=isch&q=','Bing Images','https://www.bing.com/images/search?q='],
+      videos:['YouTube','https://www.youtube.com/results?search_query=','Google Videos','https://www.google.com/search?tbm=vid&q='],
+      academic:['Google Scholar','https://scholar.google.com/scholar?q=','arXiv','https://arxiv.org/search/?query='],
+      finance:['Google Finance','https://www.google.com/finance/','Yahoo Finance Search','https://finance.yahoo.com/lookup?s=']
+    };
+    const p=providers[mode];
+    if(notice) notice.innerHTML='<span class="notice-dot"></span><span><b>'+mode.charAt(0).toUpperCase()+mode.slice(1)+' search.</b> Results are opened from trusted search providers. To keep all Google web results embedded here, connect a Google Search Engine ID in the setup below.</span>';
+    if(mode==='finance'){
+      document.getElementById('qeSearchResults').innerHTML='<div class="search-welcome"><div class="welcome-symbol">↗</div><h3>Finance discovery</h3><p>Search company names or ticker symbols with these providers.</p><div class="suggestion-chips"><button onclick="openQESearchProvider(\'https://www.google.com/finance/\')">Google Finance</button><button onclick="openQESearchProvider(\'https://finance.yahoo.com/lookup?s=\'+encodeURIComponent(document.getElementById(\'qeSearchInput\').value))">Yahoo Finance</button><button onclick="openQESearchProvider(\'https://www.tradingview.com/\')">TradingView</button></div></div>';
+    } else {
+      document.getElementById('qeSearchResults').innerHTML='<div class="search-welcome"><div class="welcome-symbol">'+({'news':'▤','images':'▧','videos':'▷','academic':'⌬'}[mode]||'⌕')+'</div><h3>'+mode.charAt(0).toUpperCase()+mode.slice(1)+' search</h3><p>Enter a query, then choose a provider to open matching results.</p><div class="suggestion-chips"><button onclick="searchViaProvider(\''+p[1]+'\')">'+p[0]+'</button><button onclick="searchViaProvider(\''+p[3]+'\')">'+p[2]+'</button></div></div>';
+    }
+  } else {
+    if(notice) notice.innerHTML=cx?'<span class="notice-dot"></span><span><b>Google-powered in-site search connected.</b> Search results are provided by your configured Programmable Search Engine.</span>':'<span class="notice-dot"></span><span><b>Reference search only — AI backend not connected.</b> Web mode searches Wikipedia inside QUANTENGINE. Other categories open external search providers; configure a search API and AI backend for a full in-site research experience.</span>';
+    document.getElementById('qeSearchResults').innerHTML='<div class="search-welcome"><div class="welcome-symbol">⌕</div><h3>Web discovery</h3><p>Search reference articles here or connect Google search for broader web results.</p></div>';
+    document.getElementById('qeGoogleSearchMount').hidden=true;
+  }
+}
+function useQESuggestion(q){document.getElementById('qeSearchInput').value=q;qeSearchMode='web';document.querySelectorAll('#page-search .search-tab').forEach(x=>x.classList.toggle('active',x.dataset.searchMode==='web'));runQESearch();}
+function searchViaProvider(base){const q=(document.getElementById('qeSearchInput').value||'').trim();if(!q){document.getElementById('qeSearchInput').focus();return;}openQESearchProvider(base+encodeURIComponent(q));}
+function openQESearchProvider(url){window.open(url,'_blank','noopener,noreferrer');}
+function saveQESearchCx(){
+  const cx=(document.getElementById('qeSearchCx').value||'').trim();
+  if(!cx){toast('Paste your Google Search Engine ID (cx) first');return;}
+  localStorage.setItem('qe_google_cx',cx);
+  loadQEGoogleSearch();
+  toast('Search Engine ID saved in this browser');
+}
+function loadQEGoogleSearch(){
+  const cx=localStorage.getItem('qe_google_cx')||'';
+  if(!cx)return;
+  const notice=document.getElementById('qeSearchNotice');
+  if(notice)notice.innerHTML='<span class="notice-dot"></span><span><b>Google-powered in-site search connected.</b> Results are rendered by your configured Programmable Search Engine.</span>';
+  const mount=document.getElementById('qeGoogleSearchMount');
+  if(mount)mount.hidden=false;
+  if(qeGoogleScriptLoading || document.querySelector('script[data-qe-google-cse]'))return;
+  qeGoogleScriptLoading=true;
+  const s=document.createElement('script');
+  s.dataset.qeGoogleCse='true';
+  s.async=true;
+  s.src='https://cse.google.com/cse.js?cx='+encodeURIComponent(cx);
+  s.onload=function(){
+    qeGoogleScriptLoading=false;
+    if(qePendingGoogleQuery && window.google && google.search && google.search.cse && google.search.cse.element){
+      const elements=google.search.cse.element.getAll();
+      if(elements && elements[0]) elements[0].execute(qePendingGoogleQuery);
+      qePendingGoogleQuery='';
+    }
+  };
+  s.onerror=function(){qeGoogleScriptLoading=false;toast('Google Search could not load. Check the cx ID and connection.');};
+  document.head.appendChild(s);
+}
+async function runQESearch(){
+  const q=(document.getElementById('qeSearchInput').value||'').trim();
+  if(!q){document.getElementById('qeSearchInput').focus();return;}
+  if(qeSearchMode!=='web'){
+    const providers={
+      news:'https://news.google.com/search?q=',
+      images:'https://www.google.com/search?tbm=isch&q=',
+      videos:'https://www.google.com/search?tbm=vid&q=',
+      academic:'https://scholar.google.com/scholar?q='
+    };
+    if(qeSearchMode==='finance'){openQESearchProvider('https://www.google.com/search?q='+encodeURIComponent(q+' finance'));return;}
+    searchViaProvider(providers[qeSearchMode]||'https://www.google.com/search?q=');return;
+  }
+  const cx=localStorage.getItem('qe_google_cx')||'';
+  if(cx){
+    const results=document.getElementById('qeSearchResults');
+    if(window.google && google.search && google.search.cse && google.search.cse.element){
+      const elements=google.search.cse.element.getAll();
+      if(elements && elements[0]) elements[0].execute(q);
+      else { qePendingGoogleQuery=q; loadQEGoogleSearch(); }
+    } else {
+      qePendingGoogleQuery=q;
+      loadQEGoogleSearch();
+      results.innerHTML='<div class="loading-search">Loading Google-powered results inside QUANTENGINE…</div>';
+    }
+    return;
+  }
+  const results=document.getElementById('qeSearchResults');
+  results.innerHTML='<div class="loading-search">⌕ Searching reference sources…</div>';
+  try{
+    const url='https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch='+encodeURIComponent(q)+'&utf8=1&format=json&origin=*&srlimit=10';
+    const response=await fetch(url);
+    if(!response.ok)throw new Error('Search service returned '+response.status);
+    const data=await response.json();
+    const items=(data.query&&data.query.search)||[];
+    if(!items.length){
+      results.innerHTML='<div class="search-welcome"><h3>No reference matches found</h3><p>Try a shorter query, or connect Google Search above for broader web results.</p><button class="btn primary" onclick="openQESearchProvider(\'https://www.google.com/search?q=\'+encodeURIComponent(document.getElementById(\'qeSearchInput\').value))">Search full web</button></div>';
+      return;
+    }
+    results.innerHTML='<p class="desc">Reference results from Wikipedia · '+items.length+' matches</p>'+items.map(item=>{
+      const title=item.title||'Untitled';
+      const link='https://en.wikipedia.org/wiki/'+encodeURIComponent(title.replace(/ /g,'_'));
+      const snippet=(item.snippet||'').replace(/<[^>]*>/g,'').replace(/&quot;/g,'"').replace(/&#039;/g,"'").replace(/&amp;/g,'&');
+      return '<article class="qe-result"><div class="qe-result-url">wikipedia.org · Reference article</div><h3><a href="'+link+'" target="_blank" rel="noopener">'+escapeQESearchText(title)+'</a></h3><p>'+escapeQESearchText(snippet)+'…</p><div class="qe-result-actions"><a href="'+link+'" target="_blank" rel="noopener">Read article ↗</a><a href="https://www.google.com/search?q='+encodeURIComponent(q)+'" target="_blank" rel="noopener">Search full web ↗</a></div></article>';
+    }).join('');
+  }catch(err){
+    results.innerHTML='<div class="error-search"><b>Could not retrieve in-site reference results.</b><p>Check your internet connection, or use full-web search below.</p><button class="btn primary" onclick="openQESearchProvider(\'https://www.google.com/search?q=\'+encodeURIComponent(document.getElementById(\'qeSearchInput\').value))">Open Google Search ↗</button></div>';
+  }
+}
+function escapeQESearchText(s){return String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+document.addEventListener('DOMContentLoaded',function(){
+  const cx=localStorage.getItem('qe_google_cx')||'';
+  const field=document.getElementById('qeSearchCx');
+  if(field&&cx)field.value=cx;
+  if(cx)loadQEGoogleSearch();
+});
+</script>
+<script>
+function qeTopSuggestion(q){const input=document.getElementById('qeTopSearchInput');if(input)input.value=q;runQETopSearch();}
+async function runQETopSearch(){
+ const input=document.getElementById('qeTopSearchInput');
+ const box=document.getElementById('qeTopSearchResults');
+ const q=(input&&input.value||'').trim();
+ if(!q){if(input)input.focus();return;}
+ box.hidden=false;
+ box.innerHTML='<div class="loading-search">⌕ Searching reference sources for “'+escapeQESearchText(q)+'”…</div>';
+ try{
+  const url='https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch='+encodeURIComponent(q)+'&utf8=1&format=json&origin=*&srlimit=7';
+  const response=await fetch(url);
+  if(!response.ok)throw new Error('Reference search unavailable');
+  const data=await response.json();
+  const items=(data.query&&data.query.search)||[];
+  const results=items.map(item=>{
+   const title=item.title||'Untitled';
+   const link='https://en.wikipedia.org/wiki/'+encodeURIComponent(title.replace(/ /g,'_'));
+   const snippet=(item.snippet||'').replace(/<[^>]*>/g,'').replace(/&quot;/g,'"').replace(/&#039;/g,"'").replace(/&amp;/g,'&');
+   return '<article class="qe-result"><div class="qe-result-url">REFERENCE · Wikipedia</div><h3><a href="'+link+'" target="_blank" rel="noopener">'+escapeQESearchText(title)+'</a></h3><p>'+escapeQESearchText(snippet)+'…</p><div class="qe-result-actions"><a href="'+link+'" target="_blank" rel="noopener">Read source ↗</a></div></article>';
+  }).join('');
+  box.innerHTML='<div><b style="color:#effaff">Search results for “'+escapeQESearchText(q)+'”</b><p style="color:#9bb7ca;font-size:11px">Reference results shown inside QUANTENGINE. For broader web coverage, use a full-web provider below.</p></div>'+(results||'<p>No reference matches found. Try a broader query.</p>')+'<div class="qe-top-search-footer"><a target="_blank" rel="noopener" href="https://www.google.com/search?q='+encodeURIComponent(q)+'">Google Web ↗</a><a target="_blank" rel="noopener" href="https://www.bing.com/search?q='+encodeURIComponent(q)+'">Bing Web ↗</a><a target="_blank" rel="noopener" href="https://duckduckgo.com/?q='+encodeURIComponent(q)+'">DuckDuckGo ↗</a><a target="_blank" rel="noopener" href="https://news.google.com/search?q='+encodeURIComponent(q)+'">News ↗</a><a target="_blank" rel="noopener" href="https://scholar.google.com/scholar?q='+encodeURIComponent(q)+'">Academic ↗</a></div>';
+ }catch(e){
+  box.innerHTML='<p style="color:#ff9dad">In-site reference search could not connect. Check the internet connection and try again.</p><div class="qe-top-search-footer"><a target="_blank" rel="noopener" href="https://www.google.com/search?q='+encodeURIComponent(q)+'">Search full web ↗</a><a target="_blank" rel="noopener" href="https://www.bing.com/search?q='+encodeURIComponent(q)+'">Bing Web ↗</a></div>';
+ }
+}
+</script>
+<style>
+/* Refined expandable dashboard controls: Open + dot + chevron, never plus signs */
+.section-accordion-summary{display:flex;align-items:center;gap:12px;cursor:pointer;list-style:none;padding:17px 14px;min-width:0}
+.section-accordion-summary::-webkit-details-marker{display:none}
+.status-accordion{display:block;margin:12px 0 22px;border:1px solid #17617e;border-radius:20px;overflow:hidden;background:linear-gradient(145deg,rgba(7,23,37,.98),rgba(4,13,23,.98));box-shadow:0 0 0 1px rgba(28,200,240,.035)}
+.status-accordion[open],.hub-accordion[open]{border-color:#28d8f5;box-shadow:0 0 0 1px rgba(40,216,245,.12),0 0 24px rgba(21,176,221,.08)}
+.section-mark{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border:1px solid #167e9f;border-radius:50%;color:#34e5ff;font-size:25px;background:#071b2a}
+.section-copy{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.section-copy strong{font-size:clamp(17px,2.7vw,24px);line-height:1.18}
+.section-copy small{color:var(--m);font-size:12px;line-height:1.4;font-weight:400}
+.section-state{display:flex;align-items:center;gap:8px;border:1px solid #087fa6;border-radius:99px;padding:9px 11px;min-width:100px;justify-content:center;color:#e9faff;background:rgba(4,25,39,.9);white-space:nowrap}
+.section-state i,.tool-open i,.hub-badge i{display:inline-block;width:10px;height:10px;border-radius:50%;background:#19d9ed;box-shadow:0 0 10px #19d9ed80;flex:0 0 auto}
+.section-state b{font-size:12px}
+.section-state .chevron{font-size:19px;color:#c7f7ff;line-height:1;transform:rotate(0);transition:transform .2s}
+.status-accordion[open]>.section-accordion-summary .chevron,.hub-accordion[open]>.hub-accordion-summary .chevron{transform:rotate(180deg)}
+.status-accordion-body{animation:alertTileReveal .2s ease both}
+.hub-accordion-summary .hub-toggle{display:none!important}
+.hub-badge{display:flex;align-items:center;gap:7px;border:1px solid #1a718d;border-radius:99px;padding:9px 11px;color:#c8f6ff;font-size:10px;font-weight:750;line-height:1.2;max-width:115px}
+.hub-badge.offline{border-color:#744050;color:#ffc3cb}
+.hub-badge.offline i{background:#ff647c;box-shadow:0 0 10px #ff647c80}
+.hub-state{min-width:92px}
+.hub-accordion-summary{padding:17px 14px}
+.alert-hub .alert-tool-strip{display:flex;flex-direction:column;gap:8px;padding:5px 0 8px}
+.alert-hub .compact-tool{display:block;width:100%;padding:0 12px;border-radius:14px;border-color:#154a65;background:linear-gradient(100deg,rgba(7,27,43,.96),rgba(5,18,31,.96))}
+.alert-hub .compact-tool summary{display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:11px;min-height:70px;padding:10px 0;position:relative;flex-direction:initial}
+.alert-hub .compact-tool summary:after{content:none!important;display:none!important}
+.alert-hub .tool-icon{width:40px;height:40px;border-radius:11px;font-size:21px;background:rgba(22,191,224,.14)}
+.alert-hub .tool-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+.alert-hub .tool-title{font-size:14px;line-height:1.25;overflow-wrap:anywhere}
+.alert-hub .compact-tool summary small{font-size:11px;line-height:1.3}
+.alert-hub .tool-open{display:flex;align-items:center;gap:7px;border:1px solid #087fa6;border-radius:99px;padding:8px 10px;color:#dffaff;font-size:12px;font-weight:700;white-space:nowrap;min-width:88px;justify-content:center;background:#061a29}
+.alert-hub .tool-open i{width:8px;height:8px}
+.alert-hub .tool-open b{font-size:19px;line-height:12px;font-weight:500;color:#5eeaff}
+.alert-hub .compact-tool[open]{grid-column:auto;border-color:#26d9f5;box-shadow:0 0 0 1px #22d5f31a,0 0 18px #16bce51a}
+.alert-hub .compact-tool[open] .tool-open{border-color:#22d5f3;background:#0b2a3b}
+.alert-hub .compact-tool[open] .tool-open b{transform:rotate(90deg)}
+.alert-hub .compact-tool[open] .tool-content{max-height:58vh;overflow:auto;margin-top:0;padding:12px 0;border-top:1px solid #18445a}
+@media(max-width:520px){.section-accordion-summary,.hub-accordion-summary{gap:8px;padding:14px 10px}.section-mark{width:36px;height:36px;flex-basis:36px}.section-copy strong{font-size:16px}.section-copy small{font-size:11px}.section-state{min-width:78px;padding:8px 8px;gap:6px}.section-state b{font-size:11px}.hub-badge{max-width:76px;font-size:8px;padding:7px 6px}.alert-hub .compact-tool summary{grid-template-columns:36px minmax(0,1fr) auto;gap:8px;min-height:66px}.alert-hub .tool-icon{width:34px;height:34px}.alert-hub .tool-title{font-size:12px}.alert-hub .compact-tool summary small{font-size:10px}.alert-hub .tool-open{min-width:70px;padding:7px 8px;font-size:11px;gap:5px}}
+</style>
+<script>
+// Keep the four tool accordions independent and make all section Open controls keyboard accessible.
+document.querySelectorAll(".status-accordion, .hub-accordion").forEach(function(d){ d.addEventListener("toggle",function(){ var state=d.querySelector(":scope > summary .section-state b"); if(state) state.textContent=d.open?"Close":"Open"; }); });
+document.querySelectorAll(".alert-tool summary").forEach(function(summary){ var d=summary.parentElement; d.addEventListener("toggle",function(){ var label=summary.querySelector(".tool-open"); if(label){ label.childNodes.forEach(function(n){ if(n.nodeType===3 && n.textContent.trim()==="Open") n.textContent=d.open?"Close":"Open"; }); } }); });
+
+function runResearchPreview(){const t=(document.getElementById('researchTopic').value||'General technology research').trim();const o=document.getElementById('researchOutput');o.style.display='block';o.textContent='[DEMO RESEARCH BRIEF]\nTopic: '+t+'\n\n1. Research question: define scope and time period.\n2. Sources needed: official releases, primary documents and reputable reporting.\n3. Compare: identify agreement, disagreement and missing evidence.\n4. Conclusion: not generated by a live AI model in this demo.\n\nNext step: connect a search API and AI backend to populate real cited findings.';}
+function calcPortfolioRisk(){const v=Math.max(0,Number(document.getElementById('portfolioValue').value)||0);const p=Math.min(100,Math.max(0,Number(document.getElementById('portfolioStress').value)||0));const loss=v*p/100;document.getElementById('portfolioRiskOutput').textContent='Illustrative loss at '+p.toFixed(1)+'% stress: ₹'+loss.toLocaleString('en-IN',{maximumFractionDigits:2})+' · remaining value ₹'+(v-loss).toLocaleString('en-IN',{maximumFractionDigits:2})+'. Not investment advice; no holdings connected.';}
+function runBacktestPreview(){const st=document.getElementById('backtestStrategy').value;const win=document.getElementById('backtestWindow').value;document.getElementById('backtestOutput').textContent='Configuration saved in this page preview: '+st+' · '+win+'. Results are unavailable until historical data, transaction costs and a backtest engine are connected.';}
+function previewMacroImpact(){const e=document.getElementById('macroEvent').value;const a=document.getElementById('macroAsset').value;document.getElementById('macroOutput').textContent='Scenario frame: '+e+' → '+a+'. Check event timing, consensus vs actual, volatility and liquidity. No live calendar or impact model is connected.';}
+function checkSourcePreview(){const u=(document.getElementById('sourceUrl').value||'').trim();const o=document.getElementById('sourceOutput');if(!u){o.textContent='Enter a URL first. This demo cannot verify the website or its claims.';return;}let valid=false;try{const x=new URL(u);valid=x.protocol==='https:'||x.protocol==='http:';}catch(e){}o.textContent=valid?'URL format looks valid only. Publisher credibility, date, evidence and claim accuracy have NOT been verified. A real checker needs server-side retrieval and safeguards.':'Please enter a valid http:// or https:// URL.';}
+</script>
+<script src="/live-connectors.js" defer></script>
 </body></html>
+<style>/* Global Explorer: no visible chevron; the entire heading remains the toggle. */
+#global-explorer .global-explorer-state{display:none!important}
+@media(max-width:620px){.top{align-items:flex-start}.top .toolbar{justify-content:flex-end;flex-wrap:wrap}.top .pill{display:none}.owner-dot{width:34px;height:34px}}
+</style>
